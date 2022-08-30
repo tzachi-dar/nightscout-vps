@@ -35,12 +35,12 @@ sudo apt-get -y install mongodb-server
 echo -e "use Nightscout\ndb.createUser({user: \"username\", pwd: \"password\", roles:[\"readWrite\"]})\nquit()" | mongo
 
 
-sudo apt-get install -y  git python nodejs npm gcc g++ make
+sudo apt-get install -y  git python gcc g++ make
 
 echo "Installing Node js"
 
-sudo apt-get install -y nodejs
-
+sudo apt-get install -y nodejs npm
+sudo apt -y autoremove
 cd /tmp
 cd /srv
 
@@ -54,11 +54,15 @@ sudo git pull
 sudo npm install
 sudo npm run generate-keys
 
+for loop in 1 2 3 4 5 6 7 8 9
+do
+read -t 0.1 dummy
+done
 
 if [ ! -s /usr/local/etc/no-ip2.conf ]
 then
 cd /usr/src
-sudo tar -xzvf /srv/nightscout-vps/helper/noip-duc-linux.tar.gz
+sudo tar -xzf /srv/nightscout-vps/helper/noip-duc-linux.tar.gz
 cd /usr/src/noip-2.1.9-1
 sudo make install
 else

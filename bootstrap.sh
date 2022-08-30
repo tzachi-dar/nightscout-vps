@@ -16,12 +16,18 @@ echo "UNABLE TO DOWNLOAD INSTALLATION SCRIPT! - cannot continue - please try aga
 exit 5
 fi
 fi
+
+
+if [ "$SSH_TTY" = "" ]
+then
+echo "Must be run from ssh session"
+exit 5
+fi
+
 echo
 echo "Running installer"
 echo
-sudo bash installation.sh
+sudo < $SSH_TTY bash installation.sh
 echo
 echo "Finished running installer"
 echo
-
-
