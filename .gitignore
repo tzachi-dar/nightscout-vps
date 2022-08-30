@@ -24,7 +24,7 @@ coverage/
 npm-debug.log
 *.heapsnapshot
 
-/tmp
+#/tmp
 /.vs
 /cgm-remote-monitor.njsproj
 /cgm-remote-monitor.sln
