@@ -22,4 +22,12 @@ clone_collections() {
     done
 }
 
-clone_collections $1
+read -rep "If you want to copy your old nightscout site, please state the name here"$'\n'"(for example: https://site.herokuapp.com). To skip presses enter."$'\n'"You will be able to run this in the future if needed. "$'\n'"site name: " rest_endpoint
+if [[ -z "$rest_endpoint" ]]
+then
+    echo "No site selcted, exiting."
+    exit
+fi
+
+echo would clone $rest_endpoint
+#clone_collections $1
