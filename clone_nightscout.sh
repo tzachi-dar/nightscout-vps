@@ -22,12 +22,32 @@ clone_collections() {
     done
 }
 
-read -rep "If you want to copy your old nightscout site, please state the name here"$'\n'"(for example: https://site.herokuapp.com). To skip presses enter."$'\n'"You will be able to run this in the future if needed. "$'\n'"site name: " rest_endpoint
-if [[ -z "$rest_endpoint" ]]
-then
-    echo "No site selcted, exiting."
-    exit
-fi
+# Try 5 times to get the user input.
+for i in {1..5}
+do
+    read -rep "If you want to copy your old nightscout site, please state the name here"$'\n'"(for example: https://site.herokuapp.com). To skip presses enter."$'\n'"You will be able to run this in the future if needed. "$'\n'"site name: " rest_endpoint
+    if [[ -z "$rest_endpoint" ]]
+    then
+        echo "No site selcted, exiting."
+        exit
+    fi
+    #check if url ends with /, and if yes remove it.
+    if [[ "$rest_endpoint" =~ '/'$ ]]; then 
+        echo "yes"
+        rest_endpoint=${rest_endpoint::-1}
+    fi
+    
+    # do a sanity check before actually starting to copy.
+    wget $rest_endpoint/api/v1/entries'.json?find[date][$gte]=1662845659&count=1' -O /tmp/entries.json
+    ret_code=$?
+    if [ ! $ret_code = 0 ]; then
+        echo "Accesseing site " $rest_endpoint "failed, please try again, enter to skip."
+        continue;
+     fi
 
-echo would clone $rest_endpoint
-#clone_collections $1
+     echo Startint to copy $rest_endpoint
+     clone_collections $rest_endpoint
+     exit 0
+   
+done
+
