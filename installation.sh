@@ -15,7 +15,7 @@ fi
 if [ ! -s /var/SWAP ]
 then
 echo "Creating swap partition"
-dd if=/dev/zero of=/var/SWAP bs=1M count=500
+dd if=/dev/zero of=/var/SWAP bs=1M count=2000
 chmod 600 /var/SWAP
 mkswap /var/SWAP
 fi
@@ -31,6 +31,7 @@ sudo apt-get -y install screen
 sudo apt-get -y install net-tools
 sudo apt-get -y install build-essential
 sudo apt-get -y install mongodb-server
+sudo apt-get -y install jq
 
 echo -e "use Nightscout\ndb.createUser({user: \"username\", pwd: \"password\", roles:[\"readWrite\"]})\nquit()" | mongo
 
@@ -233,6 +234,8 @@ EOF
 
 sudo systemctl daemon-reload
 sudo systemctl enable rc-local
+
+/srv/nightscout-vps/clone_nightscout.sh
 
 echo
 echo "Starting everything up - if works also check okay after a reboot"
