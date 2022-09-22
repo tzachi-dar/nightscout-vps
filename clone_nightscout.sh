@@ -12,14 +12,14 @@ clone_collection() {
    
    rm /tmp/$collection_name.jq.json 
    
-   # loop in half year steps until the time nightscout was made
+   # loop in half year intervals.
    DELTA=15552000
    
+   # loop until the time NS was created.
    while [ $END_TIME -gt 1325447430 ]
    do
        let "START_TIME=END_TIME-DELTA"
        
-       echo $START_TIME $END_TIME
        START_TIME_STRING=$(date -d @$START_TIME +%Y-%m-%d)
        END_TIME_STRING=$(date -d @$END_TIME +%Y-%m-%d)
        echo $START_TIME_STRING $END_TIME_STRING
