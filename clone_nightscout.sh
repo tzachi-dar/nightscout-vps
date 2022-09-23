@@ -5,12 +5,33 @@ clone_collection() {
    collection_name=$2
    read_token=$3
    echo $REST_ENDPOINT
-   if [[ $collection_name == entries ]]; then
-       wget $REST_ENDPOINT/api/v1/$collection_name'.json?find[date][$gte]=1662845659&count=1000000'$read_token -O /tmp/$collection_name.json 
-   else
-       wget $REST_ENDPOINT/api/v1/$collection_name'.json?find[created_at][$gte]=1662845659&count=1000000'$read_token -O /tmp/$collection_name.json
-   fi
-   jq '.[]' /tmp/$collection_name.json > /tmp/$collection_name.jq.json 
+   
+   END_TIME=$EPOCHSECONDS
+   #give some extratime for bad packets
+   let "END_TIME=END_TIME+3600"
+   
+   rm /tmp/$collection_name.jq.json 
+   
+   # loop in half year intervals.
+   DELTA=15552000
+   
+   # loop until the time NS was created.
+   while [ $END_TIME -gt 1325447430 ]
+   do
+       let "START_TIME=END_TIME-DELTA"
+       
+       START_TIME_STRING=$(date -d @$START_TIME +%Y-%m-%d)
+       END_TIME_STRING=$(date -d @$END_TIME +%Y-%m-%d)
+       echo $START_TIME_STRING $END_TIME_STRING
+       
+       if [[ $collection_name == entries ]]; then
+           wget $REST_ENDPOINT/api/v1/$collection_name.json'?find[date][$gte]='$START_TIME'000&find[date][$lte]='$END_TIME'000&count=1000000'$read_token -O /tmp/$collection_name.json 
+       else
+           wget $REST_ENDPOINT/api/v1/$collection_name'.json?find[created_at][$gte]='$START_TIME_STRING'&find[created_at][$lte]='$END_TIME_STRING'&count=1000000'$read_token -O /tmp/$collection_name.json
+       fi
+       jq '.[]' /tmp/$collection_name.json >> /tmp/$collection_name.jq.json 
+       let "END_TIME=END_TIME-DELTA"
+    done
    mongoimport --uri "mongodb://username:password@localhost:27017/Nightscout" --mode=upsert --collection=$collection_name --file=/tmp/$collection_name.jq.json
 
 }
