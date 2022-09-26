@@ -231,7 +231,7 @@ cat > /etc/systemd/system/rc-local.service << "EOF"
  WantedBy=multi-user.target
 
 EOF
-
+sudo sed -i -e 'sX//Unattended-Upgrade::Automatic-Reboot "false";XUnattended-Upgrade::Automatic-Reboot "true";Xg' /etc/apt/apt.conf.d/50unattended-upgrades 
 sudo systemctl daemon-reload
 sudo systemctl enable rc-local
 
