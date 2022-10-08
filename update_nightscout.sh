@@ -37,12 +37,11 @@ dialog --yesno "You can reeinstall Nightscout.\n\n
 Choose Yes to install the latest version of official Nightscout.\n\n
 Choose No to install from a fork you can specify (advanced).\n\n
 Or, press escape to cancel." 14 50
-if [ $? = 255 ] # Exit if escape is pressed.
+ans=$?
+if [ $ans = 255 ] # Exit if escape is pressed.
 then
 exit 5
-fi
-
-if [ $? = 1 ] # We need Github details
+elif [ $ans = 1 ] # We need Github details
 then
 # So, let's clear these first.
 user=""
