@@ -132,3 +132,5 @@ node server.js
 sleep 30
 done
 EOF
+
+sudo reboot
