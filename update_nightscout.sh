@@ -34,9 +34,9 @@ repo="cgm-remote-monitor"
 brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
-dialog --yesno "You can reeinstall Nightscout.\n\n
+dialog --yesno "Reinstall official Nightscout?\n\n
 Choose Yes to install the latest version of official Nightscout.\n\n
-Choose No to install from a fork you can specify (advanced).\n\n
+Choose No to install from a fork (advanced).\n\n
 Or, press escape to cancel." 14 50
 ans=$?
 if [ $ans = 255 ] # Exit if escape is pressed.
