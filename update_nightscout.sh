@@ -27,7 +27,6 @@ sudo apt-get -y install dialog
 
 echo -e "use Nightscout\ndb.createUser({user: \"username\", pwd: \"password\", roles:[\"readWrite\"]})\nquit()" | mongo
 
-cd /srv
 # Setting the defaults
 user="nightscout"
 repo="cgm-remote-monitor"
@@ -85,10 +84,13 @@ fi
 fi
 clear  # Clear the last dialog
 
-if [ -s ./$repo ] # Delete the repository directory if it exists.
+cd /
+if [ -s ./nightscout_start ] # Delete the startup directory if it exists.
 then
-sudo rm -r $repo
+sudo rm -r nightscout_start
 fi
+sudo mkdir nightscout_start
+cd /nightscout_start
 
 combined="https://github.com/$user/$repo.git" # This is the path to the repository we are installing from
 sudo git clone $combined
@@ -101,47 +103,6 @@ sudo git pull
 
 sudo npm install
 sudo npm run postinstall
-sudo npm run generate-keys
-
-for loop in 1 2 3 4 5 6 7 8 9
-do
-read -t 0.1 dummy
-done
-
-noip2 -S
-
-hostname=`noip2 -S 2>&1 | grep host | tr -s ' ' | tr -d '\t' | cut -f2 -d' ' | head -1`
-
-if [ "$hostname" = "" ]
-then
-echo "Could not determine host name - did no ip dynamic dns install fail?"
-echo "Cannot continue!"
-exit 5
-fi
-
-# execute installer
-noip2
-
-sudo apt-get install -y nginx python3-certbot-nginx inetutils-ping
-
-if [ "`grep '.well-known' /etc/nginx/sites-enabled/default`" = "" ]
-then
-sudo rm -f /tmp/nginx.conf
-sudo grep -v '^#' /etc/nginx/sites-enabled/default >/tmp/nginx.conf
-
-cat /tmp/nginx.conf | sed -z -e 'sZlocation / {[^}]*}Zlocation /.well-known {\n        try_files $uri $uri/ =404;\n}\n\nlocation / {\nproxy_pass  http://127.0.0.1:1337/;\nproxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\nproxy_set_header X-Forwarded-Proto https;\nproxy_http_version 1.1;\nproxy_set_header Upgrade $http_upgrade;\nproxy_set_header Connection "upgrade";\n}Zg' >/etc/nginx/sites-enabled/default
-
-sudo service nginx stop
-
-else
-echo "Nginx config already patched"
-fi
-
-sudo service nginx start
-sudo certbot --nginx -d "$hostname"
-
-sudo systemctl daemon-reload
-sudo systemctl start mongodb
 
 
 cat> /etc/nightscout-start.sh<<EOF
@@ -154,7 +115,7 @@ export MONGO_CONNECTION="mongodb://username:password@localhost:27017/Nightscout"
 export INSECURE_USE_HTTP=true
 export HOSTNAME="127.0.0.1"
 export PORT="1337"
-cd /srv/$repo
+cd /nightscout_start/$repo
 EOF
 
 cat>> /etc/nightscout-start.sh<< "EOF"
