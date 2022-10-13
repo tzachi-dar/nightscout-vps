@@ -12,22 +12,11 @@ echo "Cannot continue.."
 exit 5
 fi
 
-if [ ! -s /var/SWAP ]
-then
-echo "Creating swap file"
-dd if=/dev/zero of=/var/SWAP bs=1M count=2000
-chmod 600 /var/SWAP
-mkswap /var/SWAP
-fi
-swapon 2>/dev/null /var/SWAP
-
 echo "Installing dialog"
 sudo apt-get update
 sudo apt-get -y install dialog
 
-echo -e "use Nightscout\ndb.createUser({user: \"username\", pwd: \"password\", roles:[\"readWrite\"]})\nquit()" | mongo
-
-# Setting the defaults
+# Setting the defaults to correspond to the official Nightscout repository. 
 user="nightscout"
 repo="cgm-remote-monitor"
 brnch="master"
@@ -46,7 +35,7 @@ echo "Cannot continue."
 exit 5
 elif [ $ans = 1 ] # We need Github details
 then
-# Clear fork parameters.
+# Clear fork parameters so that we can detect user not entering them all.
 user=""
 repo=""
 brnch=""
@@ -69,12 +58,11 @@ fi
 # close fd
 exec 3>&-
 
-# display values just entered
-#echo "$VALUES"
+# Assign the entered values to corresponding parameters 
 user=$(echo "$VALUES" | sed -n 1p)
 repo=$(echo "$VALUES" | sed -n 2p)
 brnch=$(echo "$VALUES" | sed -n 3p)
-if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ]
+if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ] # Abort if either paramter was left blank. 
 then
 clear # clear before exiting
 echo "Missing fork parameters"
@@ -85,26 +73,28 @@ fi
 clear  # Clear the last dialog
 
 cd /
-if [ -s ./nightscout_start ] # Delete the startup directory if it exists.
+if [ -s ./nightscout_start ] # Delete the previous install directory if it exists.
 then
 sudo rm -r nightscout_start
 fi
-sudo mkdir nightscout_start
+sudo mkdir nightscout_start # Create a directory where the GitHub fork will be extracted to.
 cd /nightscout_start
 
-combined="https://github.com/$user/$repo.git" # This is the path to the repository we are installing from
+combined="https://github.com/$user/$repo.git" # This is the path to the repository we are installing from.
 sudo git clone $combined
 
-# Kill Nightscout
+# Kill Nightscout to speed up the install.
 sudo pkill -f SCREEN
 cd $repo
 sudo git checkout $brnch
 sudo git pull
 
 sudo npm install
-sudo npm run postinstall
+sudo npm run postinstall # Complete the install.
 
 
+# Create the first section of the Nightscout start script replacing the $repo variable
+# with its value, the entered repository title. 
 cat> /etc/nightscout-start.sh<<EOF
 
 #!/bin/sh
@@ -118,6 +108,8 @@ export PORT="1337"
 cd /nightscout_start/$repo
 EOF
 
+# Create the last section of the Nightscout start script
+# not replacing the argument of while with its value.
 cat>> /etc/nightscout-start.sh<< "EOF"
 
 while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
@@ -133,5 +125,5 @@ sleep 30
 done
 EOF
 
-sudo reboot
+sudo reboot # Reboot so that Nightscout starts.
 
