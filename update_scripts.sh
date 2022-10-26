@@ -6,8 +6,8 @@ echo
 
 cd /tmp
 
-#if [ -s ./nightscout-vps ] # Main
-if [ -s ./cgm-remote-monitor ] # Navid's
+if [ -s ./nightscout-vps ] # Main
+#if [ -s ./cgm-remote-monitor ] # Navid's
 then
 sudo rm -r nightscout-vps # If the directory already exists in the tmp directory, delete it.  Main
 #sudo rm -r cgm-remote-monitor # If the directory already exists in the tmp directory, delete it.  Navid's
