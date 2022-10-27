@@ -1,66 +1,19 @@
 #!/bin/bash
 
 echo
-echo "JamOrHam Nightscout Installer - Designed for Google Compute Minimal Ubuntu 20 micro instance"
+echo "Log into noip.com"
 echo
 
-
-if [ "`id -u`" != "0" ]
+if [ ! -s /srv/nightscout-vps ]
 then
-echo "Script needs root - execute bootstrap.sh or use sudo bash installation.sh"
-echo "Cannot continue.."
-exit 5
-fi
+cat > /tmp/install2_note << EOF
+Complete Initial Nightscout installation first.
 
-if [ ! -s /var/SWAP ]
-then
-echo "Creating swap partition"
-dd if=/dev/zero of=/var/SWAP bs=1M count=2000
-chmod 600 /var/SWAP
-mkswap /var/SWAP
-fi
-swapon 2>/dev/null /var/SWAP
-
-echo "Installing system basics"
-sudo apt-get update
-sudo apt-get -y install wget gnupg libcurl4 openssl liblzma5
-sudo apt-get -y install dirmngr apt-transport-https lsb-release ca-certificates
-sudo apt-get -y install vis
-sudo apt-get -y install nano
-sudo apt-get -y install screen
-sudo apt-get -y install net-tools
-sudo apt-get -y install build-essential
-sudo apt-get -y install mongodb-server
-sudo apt-get -y install jq
-
-# Create mongo user and admin.
-echo -e "use Nightscout\ndb.createUser({user: \"username\", pwd: \"password\", roles:[\"readWrite\"]})\nquit()" | mongo
-echo -e "use admin\ndb.createUser({ user: \"mongoadmin\" , pwd: \"mongoadmin\", roles: [\"userAdminAnyDatabase\", \"dbAdminAnyDatabase\", \"readWriteAnyDatabase\"]})\nquit()" | mongo
-
-
-sudo apt-get install -y  git python gcc g++ make
-
-echo "Installing Node js"
-
-sudo apt-get install -y nodejs npm
-sudo apt -y autoremove
+EOF
 cd /tmp
-cd /srv
-
-echo "Installing Nightscout"
-
-sudo git clone https://github.com/jamorham/nightscout-vps.git
-cd nightscout-vps
-sudo git checkout vps-1
-sudo git pull
-
-sudo npm install
-sudo npm run generate-keys
-
-for loop in 1 2 3 4 5 6 7 8 9
-do
-read -t 0.1 dummy
-done
+dialog --textbox install2_note 6 51
+exit
+fi
 
 if [ ! -s /usr/local/etc/no-ip2.conf ]
 then
@@ -85,9 +38,7 @@ fi
 # execute installer
 noip2
 
-
 sudo apt-get install -y nginx python3-certbot-nginx inetutils-ping
-
 
 if [ "`grep '.well-known' /etc/nginx/sites-enabled/default`" = "" ]
 then
@@ -98,7 +49,6 @@ cat /tmp/nginx.conf | sed -z -e 'sZlocation / {[^}]*}Zlocation /.well-known {\n 
 
 sudo service nginx stop
 
-
 else
 echo "Nginx config already patched"
 fi
@@ -106,11 +56,8 @@ fi
 sudo service nginx start
 sudo certbot --nginx -d "$hostname" --redirect
 
-
 sudo systemctl daemon-reload
 sudo systemctl start mongodb
-
-
 
 echo
 echo "Setting up startup service"
@@ -126,9 +73,7 @@ export DEVICESTATUS_ADVANCED="true"
 
 EOF
 
-
 cat > /etc/nightscout-start.sh << "EOF"
-
 
 #!/bin/sh
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -142,7 +87,6 @@ export HOSTNAME="127.0.0.1"
 export PORT="1337"
 
 cd /srv/nightscout-vps
-
 
 while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
 do
@@ -159,7 +103,6 @@ done
 
 EOF
 
-
 echo
 echo "You can edit the full configuration with: sudo nano /etc/nsconfig"
 echo
@@ -170,7 +113,6 @@ echo "Current API secret is: $cs"
 
 echo
 echo "If you would like to change it please enter the new secret now or hit enter to leave the same"
-
 
 read -p "New secret 12 character minimum length (blank to skip change) : " ns
 
@@ -188,10 +130,6 @@ echo "Secret changed to: ${ns}"
 sleep 3
 fi
 fi
-
-
-
-
 
 cat > /etc/rc.local << "EOF"
 #!/bin/bash
@@ -215,8 +153,6 @@ EOF
 
 chmod a+x /etc/rc.local
 
-
-
 cat > /etc/systemd/system/rc-local.service << "EOF"
 [Unit]
  Description=/etc/rc.local Compatibility
@@ -237,11 +173,10 @@ sudo sed -i -e 'sX//Unattended-Upgrade::Automatic-Reboot "false";XUnattended-Upg
 sudo systemctl daemon-reload
 sudo systemctl enable rc-local
 
-/srv/nightscout-vps/clone_nightscout.sh
-
 echo
 echo "Starting everything up - if works also check okay after a reboot"
 echo
 
 sudo systemctl start rc-local.service
-sudo systemctl status rc-local.service
+sudo reboot
+ 
