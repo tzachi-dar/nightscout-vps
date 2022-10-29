@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        #candidate {
+            border-radius: 20%;
+            border-color: aquamarine;
+            box-sizing: border-box;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+        }
+
+
+        button {
+            background-color: #e1ecf4;
+            border-radius: 3px;
+            border: 1px solid #7aa7c7;
+            box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+            box-sizing: border-box;
+            color: #39739d;
+            cursor: pointer;
+            display: inline-block;
+            font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.15385;
+            margin: 25px 50px;
+            outline: none;
+            padding: 8px .8em;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            vertical-align: baseline;
+            white-space: nowrap;
+        }
+
+            button:hover {
+                background-color: #b3d3ea;
+                color: #2c5777;
+            }
+    </style>
+</head>
+
+<body >
+    <form action="removerecord/" method="post">
+        {% csrf_token %}
+
+        <table id="myTable" style="width:100%">
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+                <th>Remove</th>
+                <th>Change Value</th>
+            </tr>
+            {% for x in variables %}
+            <tr>
+                <td> {{ x.key }}</td>
+                <td> {{ x.value }}</td>
+                <td> <button name="key" value={{ x.key }}> Remove Me </button> </td>
+                <td onclick="changePostRequest('{{ x.key }}')"> Change Value </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+        </form>
+
+        <form id = "add-form" action="addrecord/" method="post">
+            {% csrf_token %}
+            Key:<br>
+            <input id="key" name="key" onchange="shouldEnable()">
+            <br><br>
+            Value:<br>
+            <input id="value" name="value" onchange="shouldEnable()">
+            <br><br>
+            <input id="addBtn" type="submit" value="Submit" disabled="disabled">
+        </form>
+
+        <script>
+
+            function shouldEnable() {
+                var key = document.getElementById("key").value
+                var value = document.getElementById("value").value
+                if (key == "" || value == "") {
+                    document.getElementById("addBtn").disabled = true;
+                    return;
+                }
+                document.getElementById("addBtn").disabled = false;
+            }
+            function changePostRequest(key) {
+                const csrftoken = getCookie('csrftoken');
+                var content = prompt("change your value Into:");
+                if (content == null || content == "") return;
+                console.log("sending fetch")
+                fetch("http://127.0.0.1:8000/variables/changerecord/", {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify({ 'key': key, 'new_content': content })
+                }).then(() => location.reload()); //somehow, the return line in changerecord in py does not work. fixed in the future.              
+
+            }
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            
+        </script>
+</body>
+
+</html>
