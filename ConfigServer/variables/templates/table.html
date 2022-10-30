@@ -29,7 +29,7 @@
         }
 
 
-        button {
+        button, .change {
             background-color: #e1ecf4;
             border-radius: 3px;
             border: 1px solid #7aa7c7;
@@ -77,8 +77,8 @@
             <tr>
                 <td> {{ x.key }}</td>
                 <td> {{ x.value }}</td>
-                <td> <button name="key" value={{ x.key }}> Remove Me </button> </td>
-                <td onclick="changePostRequest('{{ x.key }}')"> Change Value </td>
+                <td> <button name="key" value={{ x.key }}> Remove </button> </td>
+                <td class="change" onclick="changePostRequest('{{ x.key }}')"> Change Value </td>
 
             </tr>
             {% endfor %}
@@ -88,12 +88,12 @@
         <form id = "add-form" action="addrecord/" method="post">
             {% csrf_token %}
             Key:<br>
-            <input id="key" name="key" onchange="shouldEnable()">
+            <input id="key" placeholder="Insert your new key" name="key" oninput="shouldEnable()">
             <br><br>
             Value:<br>
-            <input id="value" name="value" onchange="shouldEnable()">
+            <input id="value" name="value" placeholder="Insert your new value"  oninput="shouldEnable()">
             <br><br>
-            <input id="addBtn" type="submit" value="Submit" disabled="disabled">
+            <input id="addBtn" type="submit"  value="Add new key" disabled="disabled">
         </form>
 
         <script>
