@@ -112,7 +112,7 @@
                 var content = prompt("change your value Into:");
                 if (content == null || content == "") return;
                 console.log("sending fetch")
-                fetch("http://127.0.0.1:8000/variables/changerecord/", {
+                fetch("changerecord/", {
                     method: 'POST',
                     credentials: 'same-origin',
                     headers: {
