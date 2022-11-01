@@ -7,13 +7,16 @@ class Object(object):
     pass;
 
 class DB:
-    def __init__(self,path):
-        self.path = "example.txt"
+    def __init__(self, path):
+        self.path = path
 
     def get_items(self):
+        items = []
+        if not os.path.exists(self.path):
+            return items
         file = open(self.path, "r")
         lines = file.readlines()
-        items = []
+        
         for line in lines:
             if line == "\n":
                 continue;

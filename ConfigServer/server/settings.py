@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +21,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p8(p%wl#n*-8z%4s9-&g^=f-m&#9b81@o!qg0ebw9s1z5)9(j3'
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    print("system must load with SECRET_KEY. use \"export SECRET_KEY=security token\" before starting")
+    os._exit(1)
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =  os.environ.get('ENV_DEBUG')
+if not DEBUG:
+    print("system must load with DEBUG use \"export ENV_DEBUG=False\" before starting")
+    os._exit(1)
+DEBUG=DEBUG=='True'
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -124,3 +135,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Keep the session key for 15 minutes only.
+SESSION_COOKIE_AGE  = 900
+SESSION_SAVE_EVERY_REQUEST = True
+
+#verify this works
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
