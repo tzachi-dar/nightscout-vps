@@ -7,15 +7,12 @@ exit 5
 fi
 
 
-
-
-
 export SECRET_KEY=$(uuidgen)
 export ENV_DEBUG=False
 export ENV_TOKEN=$(uuidgen)
 export NS_CONFIG_FILE=/etc/nsconfig
 
-sudo apt install python3-pip
+sudo apt-get -y install python3-pip
 pip install Django
 pip install django-extensions Werkzeug
 
