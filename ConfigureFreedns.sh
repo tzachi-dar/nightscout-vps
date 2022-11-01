@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ "`id -u`" != "0" ]
 then
-echo "Script needs root - execute bootstrap.sh or use sudo bash installation.sh"
+echo "Script needs root - pleass run sudo ConfigureFreedns.sh"
 echo "Cannot continue.."
 exit 5
 fi
