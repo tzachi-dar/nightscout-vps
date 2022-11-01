@@ -78,7 +78,7 @@
                 <td> {{ x.key }}</td>
                 <td> {{ x.value }}</td>
                 <td> <button name="key" value={{ x.key }}> Remove </button> </td>
-                <td class="change" onclick="changePostRequest('{{ x.key }}')"> Change Value </td>
+                <td class="change" onclick="changePostRequest('{{ x.key }}', '{{ x.value }}')"> Change Value </td>
 
             </tr>
             {% endfor %}
@@ -107,9 +107,9 @@
                 }
                 document.getElementById("addBtn").disabled = false;
             }
-            function changePostRequest(key) {
+            function changePostRequest(key, value) {
                 const csrftoken = getCookie('csrftoken');
-                var content = prompt("change your value Into:");
+                var content = prompt("change your value Into:", value);
                 if (content == null || content == "") return;
                 console.log("sending fetch")
                 fetch("http://127.0.0.1:8000/variables/changerecord/", {
