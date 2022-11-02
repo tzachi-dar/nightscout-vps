@@ -1,14 +1,29 @@
 import os
 import sys
 import pathlib
+import re
 
 
 class Object(object):
-    pass;
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
 
 class DB:
     def __init__(self, path):
         self.path = path
+
+    def parse_line(line):
+        match = re.match("export *(.*)=[\"'](.*)[\"']", line)
+        if match:
+            return Object(match.group(1), match.group(2))
+        else: 
+            match = re.match("export *(.*)=(.*)", line)
+            if match:
+                return Object(match.group(1), match.group(2))
+        return None
+
 
     def get_items(self):
         items = []
@@ -18,16 +33,10 @@ class DB:
         lines = file.readlines()
         
         for line in lines:
-            if line == "\n":
-                continue;
-            line = line.replace("export ", "")
-            item = Object()
-            parameters = line.split("=")
-            item.key = parameters[0]
-            item.value = parameters[1]
-            item.value = item.value.replace('"', '')
-            item.value = item.value.replace('\n', '')
-            items.append(item)
+            line = line.strip()
+            item = DB.parse_line(line)
+            if item:
+                items.append(item)
         file.close()
         return items;
 
@@ -66,3 +75,22 @@ class DB:
         file.writelines(file_lines)
         file.close()
 
+def test_line(line, expected_key, expected_val):
+   out = DB.parse_line(line)
+   if out.key != expected_key or out.value != expected_val:
+       print("test failed for line", line, "out.key=", out.key, "out.value=", out.value)
+
+def test_re():
+    print("testint")
+    test_line('export xxx="1"', "xxx", "1")
+    test_line('export xxx=1'  , "xxx", "1")
+    test_line('export xxx="1 2"', "xxx", "1 2")
+    test_line('export xxx=1 2', "xxx", "1 2")
+    test_line('export xxx="1 \"2"', "xxx", "1 \"2")
+    test_line('export xxx="1 \'*\'2"', "xxx", "1 '*'2")
+    # does not work test_line('export xxx="1 "*"2"', "xxx", "1")
+    test_line("export xxx='1'", "xxx", "1")
+    test_line("export xxx='1 \"2'", "xxx", "1 \"2")
+
+if __name__ == "__main__":
+   test_re()
