@@ -47,9 +47,7 @@ def addrecord(request):
         template = loader.get_template('badkey.html')
         return HttpResponse(template.render(context, request))
     template = loader.get_template('table.html')
-    obj = Object()
-    obj.key = request.POST['key']
-    obj.value = request.POST['value']
+    obj = Object(request.POST['key'], request.POST['value'])
     db.append_item(obj)
     return HttpResponseRedirect(reverse('index'))
 
@@ -73,7 +71,7 @@ def changerecord(request):
         return HttpResponse(template.render(context, request))
 
     data = json.loads(request.body.decode('utf-8'))
-    item = Object()
+    item = Object(data['key'], data['new_content'])
     item.key = data['key']
     item.value = data['new_content']
     db.change_item(item)
