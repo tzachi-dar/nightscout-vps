@@ -21,7 +21,7 @@ if not NS_CONFIG_FILE:
 db = DB(NS_CONFIG_FILE)
 
 
-def index(request, **kwargs):
+def index(request):
     print("In index",type(request), request, request.GET.get('token',''), "session=" + request.session.get('token', 'mini'))
     apps.kiling_timer.ServerInUse()
     token = request.GET.get('token',request.session.get('token', ''))
@@ -49,7 +49,6 @@ def addrecord(request):
         context = {}
         template = loader.get_template('badkey.html')
         return HttpResponse(template.render(context, request))
-    template = loader.get_template('table.html')
     obj = Object(request.POST['key'], request.POST['value'])
     db.append_item(obj)
     return HttpResponseRedirect(reverse('index'))
@@ -77,8 +76,6 @@ def changerecord(request):
 
     data = json.loads(request.body.decode('utf-8'))
     item = Object(data['key'], data['new_content'])
-    item.key = data['key']
-    item.value = data['new_content']
     db.change_item(item)
     return HttpResponseRedirect(reverse('index'))
 
