@@ -6,6 +6,7 @@ from django.template import loader
 from django.urls import reverse
 import json
 from variables.DB_Helper import DB, Object
+from  variables import apps
 
 # Make sure to test this var before each request !!!
 ENV_TOKEN = os.environ.get('ENV_TOKEN')
@@ -22,6 +23,7 @@ db = DB(NS_CONFIG_FILE)
 
 def index(request, **kwargs):
     print("In index",type(request), request, request.GET.get('token',''), "session=" + request.session.get('token', 'mini'))
+    apps.kiling_timer.ServerInUse()
     token = request.GET.get('token',request.session.get('token', ''))
     template = loader.get_template('table.html')
     if token != ENV_TOKEN:
@@ -41,6 +43,7 @@ def index(request, **kwargs):
 def addrecord(request):
     print("In add record",type(request), request, request.POST.get('token',''), request.session.get('token', 'mini'))
     print("In add record 2", request.session.get('token', 'mini'))
+    apps.kiling_timer.ServerInUse()
     token = request.session.get('token', '')
     if token != ENV_TOKEN:
         context = {}
@@ -52,6 +55,7 @@ def addrecord(request):
     return HttpResponseRedirect(reverse('index'))
 
 def removerecord(request):
+    apps.kiling_timer.ServerInUse()
     token = request.session.get('token', '')
     if token != ENV_TOKEN:
         context = {}
@@ -63,6 +67,7 @@ def removerecord(request):
     return HttpResponseRedirect(reverse('index'))
 
 def changerecord(request):
+    apps.kiling_timer.ServerInUse()
     print("change Called")
     token = request.session.get('token', '')
     if token != ENV_TOKEN:
