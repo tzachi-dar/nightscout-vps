@@ -22,7 +22,7 @@ class KillingTimer:
         if time.time() - self.last_use_time > KILL_AFTER_IDLE_TIME:
             print('killing processes because of inactivity')
             os._exit(6)
-        threading.Timer(1, self.timer).start()
+        threading.Timer(60, self.timer).start()
         
     def ServerInUse(self):
         print("ServerInUse called")
