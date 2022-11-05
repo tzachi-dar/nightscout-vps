@@ -1,5 +1,4 @@
 import os
-
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -7,11 +6,20 @@ from django.urls import reverse
 import json
 from variables.DB_Helper import DB, Object
 from  variables import apps
-
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
+from json import dumps
 # Make sure to test this var before each request !!!
 ENV_TOKEN = os.environ.get('ENV_TOKEN')
+ENV_HOST = os.environ.get('HOSTNAME')
+
 if not ENV_TOKEN:
     print("system must load with ENV_TOKEN. use \"export ENV_TOKEN=security token\" before starting")
+    os._exit(1)
+
+if not ENV_HOST:
+    print("system must load with ENV_HOST. use \"export HOSTNAME=web link token\" before starting")
     os._exit(1)
 
 NS_CONFIG_FILE = os.environ.get('NS_CONFIG_FILE')
@@ -33,12 +41,15 @@ def index(request):
     # Set a session value
     request.session['token'] = token
     items = db.get_items()
+    try:
+        api_key = list(filter(lambda x: (x.key == "API_SECRET"), items))[0].value
+    except:
+        api_key = "No API_SECRET in file"
     context = {
     'variables': items,
+    'svg' : generateQR(api_key, ENV_HOST),
     }
     return HttpResponse(template.render(context, request))
-
-
 
 def addrecord(request):
     print("In add record",type(request), request, request.POST.get('token',''), request.session.get('token', 'mini'))
@@ -79,3 +90,13 @@ def changerecord(request):
     db.change_item(item)
     return HttpResponseRedirect(reverse('index'))
 
+def generateQR(key, url):
+    qr_data = {}
+    print
+    message = ["https://" + key + "@" + url+"/api/v1"]
+    qr_data["rest"] = {"endpoint" : message}
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make(dumps(qr_data), image_factory=factory, box_size=20)
+    stream = BytesIO()
+    img.save(stream)
+    return stream.getvalue().decode()
