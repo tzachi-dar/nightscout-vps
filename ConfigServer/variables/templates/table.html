@@ -28,6 +28,33 @@
             padding: 12px 15px;
         }
 
+        .hovertext {
+            position: relative;
+            border-bottom: 1px dotted black;
+        }
+
+        .hovertext:before {
+            content: attr(data-hover);
+            visibility: hidden;
+            opacity: 0;
+            width: 140px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 0;
+            transition: opacity 1s ease-in-out;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 110%;
+        }
+
+        .hovertext:hover:before {
+            opacity: 1;
+            visibility: visible;
+        }
+
 
         button, .change {
             background-color: #e1ecf4;
@@ -54,15 +81,25 @@
             vertical-align: baseline;
             white-space: nowrap;
         }
+        button:hover {
+            background-color: #b3d3ea;
+            color: #2c5777;
+        }
 
-            button:hover {
-                background-color: #b3d3ea;
-                color: #2c5777;
-            }
+        .qr-img {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .qr-img img {
+            width: 100%;
+        }
+
     </style>
 </head>
 
-<body >
+<body>
     <form action="removerecord/" method="post">
         {% csrf_token %}
 
@@ -83,65 +120,94 @@
             </tr>
             {% endfor %}
         </table>
-        </form>
+    </form>
 
-        <form id = "add-form" action="addrecord/" method="post">
-            {% csrf_token %}
-            Key:<br>
-            <input id="key" placeholder="Insert your new key" name="key" oninput="shouldEnable()">
-            <br><br>
-            Value:<br>
-            <input id="value" name="value" placeholder="Insert your new value"  oninput="shouldEnable()">
-            <br><br>
-            <input id="addBtn" type="submit"  value="Add new key" disabled="disabled">
-        </form>
+    <form id="add-form" action="addrecord/" method="post">
+        {% csrf_token %}
+        Key:<br>
+        <input id="key" placeholder="Insert your new key" name="key" oninput="shouldEnable()">
+        <br><br>
+        Value:<br>
+        <input id="value" name="value" placeholder="Insert your new value" oninput="shouldEnable()">
+        <br><br>
+        <span class="hovertext" data-hover="Key and Value Must not be empty or contain the symbols: ' ? ! ' '">
+            <input id="addBtn" type="submit" value="Add new key" disabled="disabled">
+        </span>
+    </form>
 
-        <script>
 
-            function shouldEnable() {
-                var key = document.getElementById("key").value
-                var value = document.getElementById("value").value
-                if (key == "" || value == "") {
+    <button id="toggleQR"onclick="toggleQR()">Click Here for QR configartion code</button>
+    <div style="display:none" id="QR_div" class="qr-img">
+        {{ svg|safe }}
+    </div>
+
+    <script>
+
+        function shouldEnable() {
+            var key = document.getElementById("key").value
+            var value = document.getElementById("value").value
+            if (key == "" || value == "") {
+                document.getElementById("addBtn").disabled = true;
+                return;
+            }
+            const invalid = [' ', '"', "'", "?", "!", "\n", "\t"];
+            for (var index in invalid) {
+                var char = invalid[index]
+                if (key.includes(char) || value.includes(char)) {
                     document.getElementById("addBtn").disabled = true;
                     return;
                 }
-                document.getElementById("addBtn").disabled = false;
             }
-            function changePostRequest(key, value) {
-                const csrftoken = getCookie('csrftoken');
-                var content = prompt("change your value Into:", value);
-                if (content == null || content == "") return;
-                console.log("sending fetch")
-                fetch("changerecord/", {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': csrftoken,
-                    },
-                    body: JSON.stringify({ 'key': key, 'new_content': content })
-                }).then(() => location.reload()); //somehow, the return line in changerecord in py does not work. fixed in the future.              
+            document.getElementById("addBtn").disabled = false;
+        }
 
-            }
 
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
+        function changePostRequest(key, value) {
+            const csrftoken = getCookie('csrftoken');
+            var content = prompt("change your value Into:", value);
+            if (content == null || content == "") return;
+            console.log("sending fetch")
+            fetch("changerecord/", {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ 'key': key, 'new_content': content })
+            }).then(() => location.reload()); //somehow, the return line in changerecord in py does not work. fixed in the future.
+
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
                     }
                 }
-                return cookieValue;
             }
+            return cookieValue;
+        }
+        function toggleQR() {
+            var x = document.getElementById("QR_div");
+            var btn = document.getElementById("toggleQR");
+            if (x.style.display === "none") {
+                btn.innerHTML = "Click Here to Hide QR code"
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+                btn.innerHTML = "Click Here for QR configartion code"
 
-            
-        </script>
+            }
+        }
+
+    </script>
 </body>
 
 </html>
