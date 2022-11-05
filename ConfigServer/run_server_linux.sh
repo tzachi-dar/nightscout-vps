@@ -15,14 +15,14 @@ export NS_CONFIG_FILE=/etc/nsconfig
 sudo apt-get -y install python3-pip
 pip install Django
 pip install django-extensions Werkzeug
+pip install qrcode
 
-
+. /etc/free-dns.sh
 python3 manage.py migrate  >> /tmp/variables_log 2>&1
 
 #make sure to put this after the migrate, as the migrate might fail.
 export KILL_AFTER_IDLE_TIME=900
 
-. /etc/free-dns.sh
 CERT_LOCATION="/etc/letsencrypt/live/"$HOSTNAME
 
 echo
