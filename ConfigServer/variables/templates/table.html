@@ -153,9 +153,9 @@
             const invalid = [' ', '"', "'", "?", "!", "\n", "\t"];
             for (var index in invalid) {
                 var char = invalid[index]
-                if (key.includes(char) || value.includes(char)) {
+                if (key.includes(char)) {
                     document.getElementById("addBtn").disabled = true;
-                    return;
+                    return; 
                 }
             }
             document.getElementById("addBtn").disabled = false;
