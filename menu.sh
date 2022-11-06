@@ -11,7 +11,7 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
 Use the arrow keys to move the cursor.\n\
-Press Enter to execute the highlighted option.\n\n" 22 50 11\
+Press Enter to execute the highlighted option.\n\n" 22 50 12\
  "1" "Initial Nightscout install"\
  "2" "noip.com association"\
  "3" "Edit Nightscout Variables"\
@@ -21,8 +21,9 @@ Press Enter to execute the highlighted option.\n\n" 22 50 11\
  "7" "Backup MongoDB"\
  "8" "Restore MongoDB backup"\
  "9" "Status"\
- "10" "Reboot server (Nightscout)"\
- "11" "Exit to shell (terminal)"\
+ "10" "FreeDNS Setup"\
+ "11" "Reboot server (Nightscout)"\
+ "12" "Exit to shell (terminal)"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
@@ -64,6 +65,11 @@ sudo /xDrip/scripts/update_nightscout.sh
 ;;
 
 10)
+clear
+sudo /xDrip/scripts/ConfigureFreedns.sh
+;;
+
+11)
 dialog --yesno "Are you sure you want to reboot the server?\n
 If you do, all unsaved open files will close without saving.\n"  8 50
 response=$?
@@ -75,7 +81,7 @@ sudo reboot
 fi
 ;;
 
-11)
+12)
 cd /tmp
 clear
 dialog --msgbox "You will now exit to the shell (terminal).\n\
