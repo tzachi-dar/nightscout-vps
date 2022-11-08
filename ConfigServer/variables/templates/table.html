@@ -114,7 +114,11 @@
             <tr>
                 <td> {{ x.key }}</td>
                 <td> {{ x.value }}</td>
+                {% if "API_SECRET_KEY" ==  x.key %}
+                <td> <button name="key" value={{ x.key }} disabled="disabled" class="hovertext" data-hover="Secret_Key can not be removed"> Remove </button> </td>
+                {% else %}
                 <td> <button name="key" value={{ x.key }}> Remove </button> </td>
+                {% endif %}
                 <td class="change" onclick="changePostRequest('{{ x.key }}', '{{ x.value }}')"> Change Value </td>
 
             </tr>
@@ -160,7 +164,6 @@
             }
             document.getElementById("addBtn").disabled = false;
         }
-
 
         function changePostRequest(key, value) {
             const csrftoken = getCookie('csrftoken');
