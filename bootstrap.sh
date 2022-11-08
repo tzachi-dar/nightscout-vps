@@ -1,7 +1,7 @@
 #!/bin/sh
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_10_26Test/bootstrap.sh | bash
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/bootstrap.sh | bash  <---  Only tested this way
 
 echo 
 echo "Bootstrapping the menu - Navid200"
@@ -11,17 +11,18 @@ sudo apt-get update
 sudo apt-get -y install wget bash
 sudo apt-get -y install dialog
 sudo apt-get install -y  git python gcc g++ make
+sudo apt-get -y install netcat
 
-cd /tmp
 clear
-dialog --msgbox "Shortly after you proceed, the server  will\n\
+dialog --colors --msgbox "    \Zr Developed by the xDrip team \Zn\n\n\
+Shortly after you proceed, the server  will\n\
 automatically reboot and an expected error\n\
 message will appear.\n\
 Please wait 30 seconds before clicking on\n\
 "Retry" to reconnect.\n\n\
 After this, every time you open a terminal,\n\
 a menu will offer all the available options.\n\n\
-To proceed, press Enter." 15 48
+To proceed, press Enter." 17 48
 clear
 
 cd /
@@ -37,7 +38,7 @@ fi
 
 cd /tmp
 sudo rm update_scripts.sh
-#wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_10_26Test/update_scripts.sh # Navid's
+#wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/update_scripts.sh # Navid's
 wget https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/update_scripts.sh # Main
 if [ ! -s update_scripts.sh ]
 then
@@ -70,5 +71,8 @@ alias menu="/xDrip/scripts/menu.sh"
 EOF
 fi
 
-# Reboot
+source ~/.bashrc
+# Bring up the status page
+/xDrip/scripts/Status.sh
 sudo reboot
+ 
