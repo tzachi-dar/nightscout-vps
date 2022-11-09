@@ -17,8 +17,8 @@ sudo git clone https://github.com/jamorham/nightscout-vps.git # Clone the instal
 #sudo git clone https://github.com/Navid200/cgm-remote-monitor.git # Clone the install repository.  Navid's
 cd nightscout-vps # Main
 #cd cgm-remote-monitor # Navid's
-#sudo git checkout vps-1 # Main
-sudo git checkout VerifyVM_Test # Navid's
+sudo git checkout vps-1 # Main
+#sudo git checkout VerifyVM_Test # Navid's
 sudo git pull
 sudo chmod 755 *.sh # Change premissions to allow execution by all.
 sudo mv -f *.sh /xDrip/scripts # Overwrite the scripts in the scripts directory with the new ones.
