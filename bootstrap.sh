@@ -35,8 +35,8 @@ fi
 
 cd /tmp
 sudo rm update_scripts.sh
-wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/update_scripts.sh # Navid's
-#wget https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/update_scripts.sh # Main
+#wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/update_scripts.sh # Navid's
+wget https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/update_scripts.sh # Main
 if [ ! -s update_scripts.sh ]
 then
 echo "UNABLE TO DOWNLOAD update_scripts SCRIPT! - cannot continue - please try again!"
