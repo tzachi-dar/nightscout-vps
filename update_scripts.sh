@@ -18,7 +18,7 @@ sudo git clone https://github.com/jamorham/nightscout-vps.git # Clone the instal
 cd nightscout-vps # Main
 #cd cgm-remote-monitor # Navid's
 sudo git checkout vps-1 # Main
-#sudo git checkout Navid_2022_10_26Test # Navid's
+#sudo git checkout VerifyVM_Test # Navid's
 sudo git pull
 sudo chmod 755 *.sh # Change premissions to allow execution by all.
 sudo mv -f *.sh /xDrip/scripts # Overwrite the scripts in the scripts directory with the new ones.
@@ -26,7 +26,10 @@ cd ..
 sudo rm -r nightscout-vps # Delete the temporary pull directory. # Main
 #sudo rm -r cgm-remote-monitor # Delete the temporary pull directory. # Navid's
 
-dialog --msgbox "In a new, or restored, terminal,\n\
-the updated scripts will be in effect." 7 43
+if [ ! -s /tmp/nodialog_update_scripts ]
+then
+dialog --colors --msgbox "    \Zr Developed by the xDrip team \Zn\n\n\
+Updated scripts will be in effect in a new window." 8 43
 clear
+fi
  
