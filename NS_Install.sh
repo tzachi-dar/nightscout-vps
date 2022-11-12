@@ -14,7 +14,7 @@ fi
 
 clear
 dialog --colors --msgbox "      \Zr Developed by the xDrip team \Zn\n\n\n\
-Some required packages will be installed now.  It will take about 9 minutes.  This terminal needs to be kept open.\n\
+Some required packages will be installed now.  It will take about 9 minutes.  This terminal needs to be kept open.\n\n\
 If this is not a good time, you can press escape to cancel." 14 50
 if [ $? = 255 ]
 then
