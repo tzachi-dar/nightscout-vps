@@ -6,6 +6,15 @@ echo "Please be patient (30 seconds)"
 echo "  "
 echo "  "
 
+Zone=$(basename `curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google"`)
+basename `curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google"` > /tmp/Zone
+grep 'us-west1' /tmp/Zone > /tmp/us-west1
+grep 'us-central1' /tmp/Zone > /tmp/us-central1
+grep 'us-east1' /tmp/Zone > /tmp/us-east1
+if [ ! -s /tmp/us-west1 ] && [ ! -s /tmp/us-central1 ] && [ ! -s /tmp/us-east1 ] 
+then
+Zone="\Zb\Z1 $Zone "
+
 Ram=$(free -m | sed -n 2p | awk '{print $2}')
 unit="M"
 Ramsize="$Ram"$unit
@@ -52,6 +61,7 @@ ns="$(ps -ef | grep SCREEN | grep root | fold --width=40 | sed -n 1p)"
 dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
                 \Zb Status \Zn \n\\n
   \ZbVirtual Machine\Zn \n\
+Zone: $Zone \n\  
 RAM: $Ramsize \n\
 Disk type: "$disk" \n\
 Disk size: $disksz \n\
