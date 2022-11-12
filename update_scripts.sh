@@ -5,6 +5,8 @@ echo "Fetch the latest scripts from GitHub - Navid200"
 echo
 
 Test=0
+# Comment out the next line before submission.
+Test=1 ########################### This line must be commented out before submitting a PR #########
 
 cd /tmp
 
