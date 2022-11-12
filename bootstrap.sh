@@ -68,7 +68,7 @@ Don't show dialog
 
 EOF
 
-source /xDrip/scripts/update_scripts.sh
+/xDrip/scripts/update_scripts.sh
 
 # So that the menu comes up as soon as the user logs in (opens a terminal)
 cd /tmp
