@@ -4,6 +4,8 @@ echo
 echo "Fetch the latest scripts from GitHub - Navid200"
 echo
 
+Test=0
+
 cd /tmp
 
 if [ $Test -gt 0 ] # Are we testing?  This variable is defined in the bootstrap file.
