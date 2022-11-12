@@ -11,7 +11,7 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
 Use the arrow keys to move the cursor.\n\
-Press Enter to execute the highlighted option.\n\n" 22 50 13\
+Press Enter to execute the highlighted option.\n\n" 23 50 13\
  "1" "Status"\
  "2" "Nightscout install phase 1 - 9 minutes"\
  "3" "Nightscout install phase 2 - 28 minutes"\
