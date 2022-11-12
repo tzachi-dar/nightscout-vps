@@ -28,6 +28,13 @@ sudo git checkout vps-1
 fi
 
 sudo git pull
+if [ $Test -gt 0 ]
+then
+match='Test=0'
+insert='Test=1'
+file='update_scripts.sh'
+sed -i "s/$match/$match\n$insert/" $file
+fi
 sudo chmod 755 *.sh # Change premissions to allow execution by all.
 sudo mv -f *.sh /xDrip/scripts # Overwrite the scripts in the scripts directory with the new ones.
 cd ..
