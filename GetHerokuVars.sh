@@ -14,5 +14,9 @@ APP_NAME=$(heroku apps -A --json | jq '.[] | .["name"]' | sed -e 's/\"//g')
 echo $APP_NAME
 heroku config -a $APP_NAME -s| grep -v  "STORAGE_URI\|MONGO_CONNECTION\|MONGO$\|MONGOLAB_URI\|MONGODB_URI" |  sed -e 's/^/export /' > heroku_vars.txt
 
+# the command below replaces \n with a new line and that is why it is using two lines
+sed -i 's/\\n/\
+/g' heroku_vars.txt
+
 echo "new vars are in the file heroku_vars.txt."
 echo "Please look at it, and if all is ok, try copying it to /etc/nsconfig"
