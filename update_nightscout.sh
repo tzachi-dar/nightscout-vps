@@ -4,6 +4,17 @@ echo
 echo "Install Nightscout again, from the official repository or from a fork - Navid200"
 echo
 
+# Only if phase 1 has been completed.
+a=$(node -v)
+if [ "$a" = ""  ]
+then
+clear
+dialog --colors --msgbox "     \Zb\Z1 Developed by the xDrip team \zn\n\n\
+You have not completed the first installation phase.\n\
+You need to complete that first." 10 51
+exit
+fi
+
 # Setting the defaults to correspond to the official Nightscout repository. 
 user="nightscout"
 repo="cgm-remote-monitor"
@@ -61,6 +72,19 @@ fi
 fi
 clear  # Clear the last dialog
 
+# Last chance to stop before any destructive actions.
+dialog --colors --msgbox "    \Zr Developed by the xDrip team \Zn\n\n
+The install will take about 28 minutes.  Nightscout will be down in that time.  You can cancel by pressing escape now.\n\n\
+You can minimize this terminal.  But, please don't close it.  After completion, the server will reboot." 13 50
+response=$?
+if [ $response = 255 ]
+then
+  clear # Clear dialog.
+  echo "Cancel"
+  echo "Cannot continue."
+  exit 5
+fi
+
 cd /
 if [ -s ./nightscout_start ] # Delete the previous install directory if it exists.
 then
@@ -78,8 +102,15 @@ cd $repo
 sudo git checkout $brnch
 sudo git pull
 
+clear
+
 sudo npm install
 sudo npm run postinstall # Complete the install.
+
+for loop in 1 2 3 4 5 6 7 8 9
+do
+read -t 0.1 dummy
+done
 
 
 # Create the first section of the Nightscout start script replacing the $repo variable
