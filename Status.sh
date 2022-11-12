@@ -15,7 +15,7 @@ grep 'us-east1' /tmp/Zone > /tmp/us-east1
 if [ ! -s /tmp/us-west1 ] && [ ! -s /tmp/us-central1 ] && [ ! -s /tmp/us-east1 ] 
 then
 echo "here"
-#Zone="Fail"
+Zone="Fail"
 fi
 
 Ram=$(free -m | sed -n 2p | awk '{print $2}')
