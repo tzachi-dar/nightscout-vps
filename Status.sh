@@ -6,7 +6,7 @@ echo "Please be patient (30 seconds)"
 echo "  "
 echo "  "
 
-#ZoneRaw=$(basename `curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google"`)
+ZoneRaw=$(basename `curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google"`)
 #Zone="$ZoneRaw"
 #basename `curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google"` > /tmp/Zone
 #grep 'us-west1' /tmp/Zone > /tmp/us-west1
