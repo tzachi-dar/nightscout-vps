@@ -12,56 +12,57 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
   \n\n
 Use the arrow keys to move the cursor.\n\
 Press Enter to execute the highlighted option.\n\n" 22 50 12\
- "1" "Initial Nightscout install"\
- "2" "noip.com association"\
- "3" "Edit Nightscout Variables"\
- "4" "Copy data from another Nightscout"\
- "5" "Update/Customize Nightscout"\
- "6" "Update scripts"\
- "7" "Backup MongoDB"\
- "8" "Restore MongoDB backup"\
- "9" "Status"\
+ "1" "Status"\
+ "2" "Nightscout install phase 1 - 9 minutes"\
+ "3" "Nightscout install phase 2 - 28 minutes"\
+ "4" "Nightscout install phase 3 - 10 minutes"\
+ "5" "Edit Nightscout Variables"\
+ "6" "Copy data from another Nightscout"\
+ "7" "Update scripts"\
+ "8" "Backup MongoDB"\
+ "9" "Restore MongoDB backup"\
  "10" "FreeDNS Setup"\
- "11" "Reboot server (Nightscout)"\
- "12" "Exit to shell (terminal)"\
+ "11" "Update/Customize Nightscout"\
+ "12" "Reboot server (Nightscout)"\
+ "13" "Exit to shell (terminal)"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
 
 1)
-sudo /xDrip/scripts/NS_Install.sh
+/xDrip/scripts/Status.sh
 ;;
 
 2)
-sudo /xDrip/scripts/NS_Install2.sh
+sudo /xDrip/scripts/NS_Install.sh
 ;;
 
 3)
-/xDrip/scripts/variables.sh
-;;
-
-4)
-sudo /xDrip/scripts/clone_nightscout.sh
-;;
-
-5)
 sudo /xDrip/scripts/update_nightscout.sh
 ;;
 
+4)
+sudo /xDrip/scripts/NS_Install3.sh
+;;
+
+5)
+/xDrip/scripts/variables.sh
+;;
+
 6)
-/xDrip/scripts/update_scripts.sh
+sudo /xDrip/scripts/clone_nightscout.sh
 ;;
 
 7)
-/xDrip/scripts/backupmongo.sh
+/xDrip/scripts/update_scripts.sh
 ;;
 
 8)
-/xDrip/scripts/restoremongo.sh
+/xDrip/scripts/backupmongo.sh
 ;;
 
 9)
-/xDrip/scripts/Status.sh
+/xDrip/scripts/restoremongo.sh
 ;;
 
 10)
@@ -70,6 +71,10 @@ sudo /xDrip/scripts/ConfigureFreedns.sh
 ;;
 
 11)
+sudo /xDrip/scripts/update_nightscout.sh
+;;
+
+12)
 dialog --yesno "Are you sure you want to reboot the server?\n
 If you do, all unsaved open files will close without saving.\n"  8 50
 response=$?
@@ -81,7 +86,7 @@ sudo reboot
 fi
 ;;
 
-12)
+13)
 cd /tmp
 clear
 dialog --msgbox "You will now exit to the shell (terminal).\n\
