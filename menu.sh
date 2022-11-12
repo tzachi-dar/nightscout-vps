@@ -55,7 +55,7 @@ sudo /xDrip/scripts/clone_nightscout.sh
 
 7)
 clear
-/xDrip/scripts/update_scripts.sh
+sudo /xDrip/scripts/update_scripts.sh
 ;;
 
 8)
