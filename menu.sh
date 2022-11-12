@@ -54,6 +54,7 @@ sudo /xDrip/scripts/clone_nightscout.sh
 ;;
 
 7)
+clear
 /xDrip/scripts/update_scripts.sh
 ;;
 
@@ -89,8 +90,8 @@ fi
 13)
 cd /tmp
 clear
-dialog --msgbox "You will now exit to the shell (terminal).\n\
-To return to the menu, enter menu in the terminal." 7 54
+dialog --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
+You will now exit to the shell (terminal).  To return to the menu, enter menu in the terminal." 9 50
 clear
 exit
 ;;
