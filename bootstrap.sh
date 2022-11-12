@@ -45,10 +45,6 @@ fi
 if [ $Test -gt 0 ]
 then
 wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_11_11_Test/update_scripts.sh # Test
-match='Test=0'
-insert='Test=1'
-file='update_scripts.sh'
-sed -i "s/$match/$match\n$insert/" $file
 else
 wget https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/update_scripts.sh # Main
 fi
