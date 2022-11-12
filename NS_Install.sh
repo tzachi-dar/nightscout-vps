@@ -4,6 +4,7 @@ echo
 echo "JamOrHam Nightscout Installer - Designed for Google Compute Minimal Ubuntu 20 micro instance"
 echo
 
+. /etc/git-parameters.sh
 
 if [ "`id -u`" != "0" ]
 then
@@ -56,9 +57,9 @@ cd /srv
 
 echo "Installing Nightscout"
 
-sudo git clone https://github.com/jamorham/nightscout-vps.git
-cd nightscout-vps
-sudo git checkout vps-1
+sudo git clone https://github.com/"$GIT_USER"/"$GIT_REPOSITRY".git
+cd "$GIT_REPOSITRY"
+sudo git checkout "$GIT_BRANCH"
 sudo git pull
 
 sudo npm install

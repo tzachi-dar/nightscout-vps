@@ -1,4 +1,42 @@
+#!/bin/bash
+
+# The optional params to this program are user, repository and branch.
+# The defaults are jamorham, nightscout-vps and vps-1
+# All of them must be given, or none of them.
+
+function get_git_params {
+    if [[ $# -eq 0 ]]
+    then 
+        echo "no params are used"
+        GIT_USER="jamorham"
+        GIT_REPOSITRY="nightscout-vps"
+        GIT_BRANCH="vps-1"
+    else 
+        if [[ $# -eq 3 ]]
+        then 
+            echo "using supplied parameters"
+            GIT_USER="$1"
+            GIT_REPOSITRY="$2"
+            GIT_BRANCH="$3"
+        else
+            echo "Illigal number of parameters" $# "expecting zero or 3"
+            exit 1
+        fi
+    fi
+#create a file to save the new parameters for the next run.
+cat> /etc/git-parameters.sh<<EOF
 #!/bin/sh
+export GIT_USER=$GIT_USER
+export GIT_REPOSITRY=$GIT_REPOSITRY
+export GIT_BRANCH=$GIT_BRANCH
+EOF
+}
+
+get_git_params $*
+
+
+
+
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 
 # curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/bootstrap.sh | bash  <---  Only tested this way
@@ -35,8 +73,7 @@ fi
 
 cd /tmp
 sudo rm update_scripts.sh
-#wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/update_scripts.sh # Navid's
-wget https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/update_scripts.sh # Main
+wget https://raw.githubusercontent.com/"$GIT_USER"/"$GIT_REPOSITRY"/"$GIT_BRANCH"/update_scripts.sh # Main
 if [ ! -s update_scripts.sh ]
 then
 echo "UNABLE TO DOWNLOAD update_scripts SCRIPT! - cannot continue - please try again!"

@@ -4,7 +4,9 @@ echo
 echo "Log into noip.com"
 echo
 
-if [ ! -s /srv/nightscout-vps ]
+. /etc/git-parameters.sh
+
+if [ ! -s /srv/"$GIT_REPOSITRY" ]
 then
 cat > /tmp/install2_note << EOF
 Complete Initial Nightscout installation first.
@@ -18,7 +20,7 @@ fi
 if [ ! -s /usr/local/etc/no-ip2.conf ]
 then
 cd /usr/src
-sudo tar -xzf /srv/nightscout-vps/helper/noip-duc-linux.tar.gz
+sudo tar -xzf /srv/"$GIT_REPOSITRY"/helper/noip-duc-linux.tar.gz
 cd /usr/src/noip-2.1.9-1
 sudo make install
 else
@@ -86,7 +88,7 @@ export INSECURE_USE_HTTP=true
 export HOSTNAME="127.0.0.1"
 export PORT="1337"
 
-cd /srv/nightscout-vps
+cd /srv/"$GIT_REPOSITRY"
 
 while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
 do
