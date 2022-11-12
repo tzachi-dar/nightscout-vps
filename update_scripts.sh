@@ -6,7 +6,7 @@ echo
 
 cd /tmp
 
-if [ Test -gt 0 ] # Are we testing?  This variable is defined in the bootstrap file.
+if [ $Test -gt 0 ] # Are we testing?  This variable is defined in the bootstrap file.
 then
 sudo rm -rf cgm-remote-monitor
 sudo git clone https://github.com/Navid200/cgm-remote-monitor.git # Test
