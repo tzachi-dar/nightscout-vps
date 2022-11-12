@@ -75,7 +75,7 @@ export DEVICESTATUS_ADVANCED="true"
 
 EOF
 
-cat > /etc/nightscout-start.sh << "EOF"
+sudo bash -c 'cat> /etc/nightscout-start.sh'<<EOF
 
 #!/bin/sh
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -88,7 +88,7 @@ export INSECURE_USE_HTTP=true
 export HOSTNAME="127.0.0.1"
 export PORT="1337"
 
-cd /srv/"$GIT_REPOSITRY"
+cd /srv/$GIT_REPOSITRY
 
 while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
 do
