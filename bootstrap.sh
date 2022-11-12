@@ -24,7 +24,7 @@ function get_git_params {
         fi
     fi
 #create a file to save the new parameters for the next run.
-cat> /etc/git-parameters.sh<<EOF
+sudo bash -c 'cat> /etc/git-parameters.sh'<<EOF
 #!/bin/sh
 export GIT_USER=$GIT_USER
 export GIT_REPOSITRY=$GIT_REPOSITRY
