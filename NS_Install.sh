@@ -12,6 +12,7 @@ echo "Cannot continue.."
 exit 5
 fi
 
+clear
 dialog --colors --msgbox "      \Zr Developed by the xDrip team \Zn\n\n\n\
 Some required packages will be installed now.\n\
 It will take about 20 minutes.\n
@@ -22,6 +23,7 @@ then
 clear
 exit
 fi
+clear
 
 if [ ! -s /var/SWAP ]
 then
@@ -52,22 +54,4 @@ echo "Installing Node js"
 
 sudo apt-get install -y nodejs npm
 sudo apt -y autoremove
-cd /srv
-
-echo "Installing Nightscout"
-
-sudo git clone https://github.com/jamorham/nightscout-vps.git
-cd nightscout-vps
-sudo git checkout vps-1
-sudo git pull
-
-sudo npm install
-sudo npm run generate-keys
-
-for loop in 1 2 3 4 5 6 7 8 9
-do
-read -t 0.1 dummy
-done
-
-clear
  
