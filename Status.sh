@@ -74,7 +74,7 @@ dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
 Zone: "$Zone" \n\
 RAM: $Ramsize \n\
 Disk type: "$disk" \n\
-Disk size: $disksz    $DiskUsedPercent used \n\
+Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\n\
 ------------------------------------------ \n\
