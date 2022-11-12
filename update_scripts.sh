@@ -8,12 +8,18 @@ cd /tmp
 
 if [ $Test -gt 0 ] # Are we testing?  This variable is defined in the bootstrap file.
 then
-sudo rm -rf cgm-remote-monitor
+if [ -s ./cgm-remote-monitor ]
+then
+sudo rm -r cgm-remote-monitor
+fi
 sudo git clone https://github.com/Navid200/cgm-remote-monitor.git # Test
 cd cgm-remote-monitor
 sudo git checkout Navid_2022_11_11_Test
 else # If we are not testing
-sudo rm -rf nightscout-vps
+if [ -s ./nightscout-vps ]
+then
+sudo rm -r nightscout-vps
+fi
 sudo git clone https://github.com/jamorham/nightscout-vps.git #  Main
 cd nightscout-vps
 sudo git checkout vps-1
