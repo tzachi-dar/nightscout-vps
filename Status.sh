@@ -60,8 +60,8 @@ mongo="$(mongod --version | sed -n 1p)"
 ns="$(ps -ef | grep SCREEN | grep root | fold --width=40 | sed -n 1p)"
 
 dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
-                \Zb Status \Zn \n\\n
-  \ZbVirtual Machine\Zn \n\
+                \Zb Status \Zn\n\n\
+  \ZbVirtual Machine\Zn\n\
 Zone: "$Zone" \n\  
 RAM: $Ramsize \n\
 Disk type: "$disk" \n\
