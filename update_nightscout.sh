@@ -4,45 +4,112 @@ echo
 echo "Install Nightscout again, from the official repository or from a fork - Navid200"
 echo
 
-# Only if phase 1 has been completed.
-a=$(node -v)
-if [ "$a" = ""  ]
-then
-clear
-dialog --colors --msgbox "     \Zb\Z1 Developed by the xDrip team \zn\n\n\
-You have not completed the first installation phase.\n\
-You need to complete that first." 10 51
-exit
-fi
+## Only if phase 1 has been completed.
+#a=$(node -v)
+#if [ "$a" = ""  ]
+#then
+#clear
+#dialog --colors --msgbox "     \Zb\Z1 Developed by the xDrip team \zn\n\n\
+#You have not completed the first installation phase.\n\
+#You need to complete that first." 10 51
+#exit
+#fi
 
 # Setting the defaults to correspond to the official Nightscout repository. 
-user="nightscout"
-repo="cgm-remote-monitor"
-brnch="master"
+#user="nightscout"
+#repo="cgm-remote-monitor"
+#brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
 
 while :
 do
 clear
-Choice=$(dialog --colors --nocancel --nook --menu "     \Zr Developed by the xDrip team \Zn Use the arrow keys to move the cursor.  Press Enter to proceed with the highlighted option.  Press Escape to cancel." 14 50 3\
-"1" "Install the latest official Nightscout"\
-"2" "Install Nightscout from a GitHub fork (advanced)"\
-"3" "Return to the main menu"\
-3>&1 1>&2 2>&3)
+Choice=$(dialog --colors --nocancel --nook --menu "\
+      \Zr Developed by the xDrip team \Zn\
+  \n\n
+Use the arrow keys to move the cursor.\n\
+Press Enter to execute the highlighted option.\n\n" 24 50 15\
+ "A" "Status"\
+ "B" "Nightscout install phase 1 - 9 minutes"\
+ "C" "Nightscout install phase 2 - 28 minutes"\
+ "D" "Nightscout install phase 3 - 10 minutes"\
+ "E" "Edit Nightscout Variables"\
+ "F" "Copy data from another Nightscout"\
+ "G" "Update scripts"\
+ "H" "Backup MongoDB"\
+ "I" "Restore MongoDB backup"\
+ "J" "Free DNS setup"\
+ "K" "Update/Customize Nightscout"\
+ "L" "Reboot server (Nightscout)"\
+ "M" "Exit to shell (terminal)"\
+ 3>&1 1>&2 2>&3)
 
 case $Choice in
 
-1)
-# Select the official Nightscout repository. 
-echo "Opdate"
+A)
+/xDrip/scripts/Status.sh
 ;;
 
-2)
-echo "Customise"
+B)
+sudo /xDrip/scripts/NS_Install.sh
 ;;
 
-3)
+C)
+sudo /xDrip/scripts/update_nightscout.sh
+;;
+
+D)
+sudo /xDrip/scripts/NS_Install3.sh
+;;
+
+E)
+/xDrip/scripts/variables.sh
+;;
+
+F)
+sudo /xDrip/scripts/clone_nightscout.sh
+;;
+
+G)
+clear
+/xDrip/scripts/update_scripts.sh
+;;
+
+H)
+/xDrip/scripts/backupmongo.sh
+;;
+
+I)
+/xDrip/scripts/restoremongo.sh
+;;
+
+J)
+clear
+sudo /xDrip/scripts/ConfigureFreedns.sh
+;;
+
+K)
+sudo /xDrip/scripts/update_nightscout.sh
+;;
+
+L)
+dialog --yesno "Are you sure you want to reboot the server?\n
+If you do, all unsaved open files will close without saving.\n"  8 50
+response=$?
+if [ $response = 255 ] || [ $response = 1 ]
+then
+clear
+else
+sudo reboot
+fi
+;;
+
+M)
+clear
+dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
+You will now exit to the shell (terminal).  To return to the menu, enter menu in the terminal." 9 50
+clear
 exit
 ;;
 
