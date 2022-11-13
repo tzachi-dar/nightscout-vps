@@ -22,33 +22,35 @@ brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
 
-#while :
-#do
-#clear
-#Choice=$(dialog --colors --nocancel --nook --menu "\
-#      \Zr Developed by the xDrip team \Zn\n\n
-#Use the arrow keys to move the cursor.  Press Enter to proceed with the highlighted option.  Press Escape to cancel.\n\n" 14 50 3\
-#"Update" "Install the latest official Nightscout"\
-#"Customize" "Install Nightscout from a GitHub fork (advanced)"\
-#"Cancel" "Return to the main menu"\
-#3>&1 1>&2 2>&3)
-#
-#case $Choice in
-#
-#Update)
-## Select the official Nightscout repository. 
-#cat "Opdate" > /tmp/Update
-#;;
-#
-#Customize)
-#cat "Customise" > /tmp/Customize
-#;;
-#
-#Cancel)
-#exit
-#;;
-#
-#esac
+while :
+do
+clear
+Choice=$(dialog --colors --nocancel --nook --menu "\
+      \Zr Developed by the xDrip team \Zn\n\n
+Use the arrow keys to move the cursor.  Press Enter to proceed with the highlighted option.  Press Escape to cancel.\n\n" 14 50 3\
+"Update" "Install the latest official Nightscout"\
+"Customize" "Install Nightscout from a GitHub fork (advanced)"\
+"Cancel" "Return to the main menu"\
+3>&1 1>&2 2>&3)
+
+case $Choice in
+
+Update)
+# Select the official Nightscout repository. 
+cat "Opdate" > /tmp/Update
+;;
+
+Customize)
+cat "Customise" > /tmp/Customize
+;;
+
+Cancel)
+exit
+;;
+
+esac
+
+done
 
 
 #dialog --colors --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
