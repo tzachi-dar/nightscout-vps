@@ -25,7 +25,7 @@ clear
 
 if [ ! -s /var/SWAP ]
 then
-echo "Creating swap partition"
+echo "Creating swap file"
 dd if=/dev/zero of=/var/SWAP bs=1M count=2000
 chmod 600 /var/SWAP
 mkswap /var/SWAP
