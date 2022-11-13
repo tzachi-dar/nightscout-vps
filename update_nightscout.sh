@@ -27,22 +27,23 @@ do
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "     \Zr Developed by the xDrip team \Zn\n\n\
 Use the arrow keys to move the cursor.  Press Enter to proceed with the highlighted option.  Press Escape to cancel.\n\n" 14 50 3\
-"Update" "Install the latest official Nightscout"\
-"Customize" "Install Nightscout from a GitHub fork (advanced)"\
-"Cancel" "Return to the main menu" 3>&1 1>&2 2>&3)
+"1" "Install the latest official Nightscout"\
+"2" "Install Nightscout from a GitHub fork (advanced)"\
+"3" "Return to the main menu"\
+3>&1 1>&2 2>&3)
 
 case $Choice in
 
-Update)
+1)
 # Select the official Nightscout repository. 
-cat "Opdate" > /tmp/Update
+echo "Opdate"
 ;;
 
-Customize)
-cat "Customise" > /tmp/Customize
+2)
+echo "Customise"
 ;;
 
-Cancel)
+3)
 exit
 ;;
 
