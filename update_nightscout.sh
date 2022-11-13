@@ -14,7 +14,7 @@ You need to complete installation phase 1 first." 9 50
 exit
 fi
 
- Setting the defaults to correspond to the official Nightscout repository. 
+# Setting the defaults to correspond to the official Nightscout repository. 
 user="nightscout"
 repo="cgm-remote-monitor"
 brnch="master"
