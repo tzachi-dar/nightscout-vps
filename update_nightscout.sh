@@ -32,7 +32,7 @@ Use the arrow keys to move the cursor.\n\
 Press Enter to execute the highlighted option.\n\n" 24 50 15\
  "A" "Status"\
  "B" "Nightscout install phase 1 - 9 minutes"\
- "Cancel" "Exit to shell (terminal)"\
+ "Cancel" "Return to main menu"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
@@ -45,11 +45,7 @@ B)
 echo "b"
 ;;
 
-M)
-clear
-dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
-You will now exit to the shell (terminal).  To return to the menu, enter menu in the terminal." 9 50
-clear
+Cancel)
 exit
 ;;
 
