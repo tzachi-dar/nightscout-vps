@@ -4,21 +4,21 @@ echo
 echo "Install Nightscout again, from the official repository or from a fork - Navid200"
 echo
 
-## Only if phase 1 has been completed.
-#a=$(node -v)
-#if [ "$a" = ""  ]
-#then
-#clear
-#dialog --colors --msgbox "     \Zb\Z1 Developed by the xDrip team \zn\n\n\
-#You have not completed the first installation phase.\n\
-#You need to complete that first." 10 51
-#exit
-#fi
+# Only if phase 1 has been completed.
+a=$(node -v)
+if [ "$a" = ""  ]
+then
+clear
+dialog --colors --msgbox "     \Zb\Z1 Developed by the xDrip team \zn\n\n\
+You have not completed the first installation phase.\n\
+You need to complete that first." 10 51
+exit
+fi
 
-# Setting the defaults to correspond to the official Nightscout repository. 
-#user="nightscout"
-#repo="cgm-remote-monitor"
-#brnch="master"
+ Setting the defaults to correspond to the official Nightscout repository. 
+user="nightscout"
+repo="cgm-remote-monitor"
+brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
 
@@ -29,7 +29,7 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
 Use the arrow keys to move the cursor.\n\
-Press Enter to execute the highlighted option.\n\n" 24 50 15\
+Press Enter to execute the highlighted option.\n\n" 12 50 3\
  "A" "Status"\
  "B" "Nightscout install phase 1 - 9 minutes"\
  "Cancel" "Return to main menu"\
