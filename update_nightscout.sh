@@ -37,14 +37,14 @@ Press Enter to execute the highlighted option.\n\n" 13 50 3\
 
 case $Choice in
 
-Update)
+1)
 # Select the official Nightscout repository. 
 user="nightscout"
 repo="cgm-remote-monitor"
 brnch="master"
 ;;
 
-Customize)
+2)
 user=""
 repo=""
 brnch=""
@@ -81,7 +81,7 @@ fi
 
 ;;
 
-Cancel)
+3)
 exit
 ;;
 
