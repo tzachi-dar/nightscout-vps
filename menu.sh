@@ -13,9 +13,9 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
 Use the arrow keys to move the cursor.\n\
 Press Enter to execute the highlighted option.\n\n" 23 50 13\
  "1" "Status"\
- "2" "Nightscout install phase 1 - 9 minutes"\
- "3" "Nightscout install phase 2 - 28 minutes"\
- "4" "Nightscout install phase 3 - 10 minutes"\
+ "2" "Installation phase 1 - 9 minutes"\
+ "3" "Installation phase 2 - 28 minutes"\
+ "4" "Installation phase 3 - 10 minutes"\
  "5" "Edit Nightscout Variables"\
  "6" "Copy data from another Nightscout"\
  "7" "Update scripts"\
