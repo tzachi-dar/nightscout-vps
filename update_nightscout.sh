@@ -21,8 +21,6 @@ brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
 
-while :
-do
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
@@ -85,8 +83,6 @@ exit
 ;;
 
 esac
-
-done
 
 clear  # Clear the last dialog
 
