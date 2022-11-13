@@ -21,55 +21,85 @@ repo="cgm-remote-monitor"
 brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
-dialog --colors --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
-Reinstall official Nightscout?\n\n
-Choose Yes to install the latest version of official Nightscout.\n\n
-Choose No to install from a fork (advanced).\n\n
-Or, press escape to cancel." 16 50
-ans=$?
-if [ $ans = 255 ] # Exit if escape is pressed.
-then
-clear # Clear the screen before exiting.
-echo "Escape"
-echo "Cannot continue."
-exit 5
-elif [ $ans = 1 ] # We need Github details
-then
-# Clear fork parameters so that we can detect user not entering them all.
-user=""
-repo=""
-brnch=""
 
-# open fd
-exec 3>&1
+while :
+do
+clear
+Choice=$(dialog --colors --nocancel --nook --menu "\
+      \Zr Developed by the xDrip team \Zn\n\n
+Use the arrow keys to move the cursor.  Press Enter to proceed with the highlighted option.  Press Escape to cancel.\n\n" 14 50 3\
+"Update" "Install the latest official Nightscout"\
+"Customize" "Install Nightscout from a GitHub fork (advanced)"\
+"Cancel" "Return to the main menu"\
+3>&1 1>&2 2>&3)
 
-# Ask for the fork details. 
-clear # Clear the screen before placing the next dialog on.
-VALUES=$(dialog --colors --ok-label "Submit" --form "     \Zr Developed by the xDrip team \Zn\n\n Enter the GitHub details for the Nightscout version you want to install.\n" 14 50 0 "User ID:" 1 1 "$user" 1 14 25 0 "Repository:" 2 1 "$repo" 2 14 25 0 "Branch:" 3 1 "$brnch" 3 14 25 0 2>&1 1>&3)
-ans2=$?
-if [ $ans2 = 255 ] || [ $ans2 = 1 ] # Exit if escaped or cancelled
-then
-clear # Clear dialog.
-echo "Escape or Cancel"
-echo "Cannot continue."
-exit 5
-fi
+case $Choice in
 
-# close fd
-exec 3>&-
+Update)
+# Select the official Nightscout repository. 
+cat "Opdate" > /tmp/Update
+;;
 
-# Assign the entered values to corresponding parameters 
-user=$(echo "$VALUES" | sed -n 1p)
-repo=$(echo "$VALUES" | sed -n 2p)
-brnch=$(echo "$VALUES" | sed -n 3p)
-if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ] # Abort if either paramter was left blank. 
-then
-clear # clear before exiting
-echo "Missing fork parameters"
-echo "Cannot continue."
-exit 5
-fi
-fi
+Customize)
+cat "Customise" > /tmp/Customize
+;;
+
+Cancel)
+exit
+;;
+
+esac
+
+
+#dialog --colors --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
+#Reinstall official Nightscout?\n\n
+#Choose Yes to install the latest version of official Nightscout.\n\n
+#Choose No to install from a fork (advanced).\n\n
+#Or, press escape to cancel." 16 50
+#ans=$?
+#if [ $ans = 255 ] # Exit if escape is pressed.
+#then
+#clear # Clear the screen before exiting.
+#echo "Escape"
+#echo "Cannot continue."
+#exit 5
+#elif [ $ans = 1 ] # We need Github details
+#then
+## Clear fork parameters so that we can detect user not entering them all.
+#user=""
+#repo=""
+#brnch=""
+#
+## open fd
+#exec 3>&1
+#
+## Ask for the fork details. 
+#clear # Clear the screen before placing the next dialog on.
+#VALUES=$(dialog --colors --ok-label "Submit" --form "     \Zr Developed by the xDrip team \Zn\n\n Enter the GitHub details for the Nightscout version you want to install.\n" 14 50 0 "User ID:" 1 1 "$user" 1 14 25 0 "Repository:" 2 1 "$repo" 2 14 25 0 "Branch:" 3 1 "$brnch" 3 14 25 0 2>&1 1>&3)
+#ans2=$?
+#if [ $ans2 = 255 ] || [ $ans2 = 1 ] # Exit if escaped or cancelled
+#then
+#clear # Clear dialog.
+#echo "Escape or Cancel"
+#echo "Cannot continue."
+#exit 5
+#fi
+#
+## close fd
+#exec 3>&-
+#
+## Assign the entered values to corresponding parameters 
+#user=$(echo "$VALUES" | sed -n 1p)
+#repo=$(echo "$VALUES" | sed -n 2p)
+#brnch=$(echo "$VALUES" | sed -n 3p)
+#if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ] # Abort if either paramter was left blank. 
+#then
+#clear # clear before exiting
+#echo "Missing fork parameters"
+#echo "Cannot continue."
+#exit 5
+#fi
+#fi
 clear  # Clear the last dialog
 
 # Last chance to stop before any destructive actions.
