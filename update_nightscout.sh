@@ -30,9 +30,9 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
   \n\n
 Use the arrow keys to move the cursor.\n\
 Press Enter to execute the highlighted option.\n\n" 13 50 3\
- "Update" "Install latest official Nightscout"\
- "Customize" "Install from a fork (Advanced)"\
- "Cancel" "Return to main menu"\
+ "1" "Install latest official Nightscout"\
+ "2" "Install from a fork (Advanced)"\
+ "3" "Return to main menu"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
@@ -45,7 +45,40 @@ brnch="master"
 ;;
 
 Customize)
-echo "b"
+user=""
+repo=""
+brnch=""
+
+# open fd
+exec 3>&1
+
+# Ask for the fork details. 
+clear
+VALUES=$(dialog --colors --ok-label "Submit" --form "     \Zr Developed by the xDrip team \Zn\n\n Enter the GitHub details for the Nightscout version you want to install.\n" 14 50 0 "User ID:" 1 1 "$user" 1 14 25 0 "Repository:" 2 1 "$repo" 2 14 25 0 "Branch:" 3 1 "$brnch" 3 14 25 0 2>&1 1>&3)
+response=$?
+if [ $response = 255 ] || [ $response = 1 ] # Exit if escaped or cancelled
+then
+clear # Clear dialog.
+echo "Escape or Cancel"
+echo "Cannot continue."
+exit 5
+fi
+
+# close fd
+exec 3>&-
+
+# Assign the entered values to corresponding parameters 
+user=$(echo "$VALUES" | sed -n 1p)
+repo=$(echo "$VALUES" | sed -n 2p)
+brnch=$(echo "$VALUES" | sed -n 3p)
+if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ] # Abort if either paramter was left blank. 
+then
+clear # clear before exiting
+echo "Missing fork parameters"
+echo "Cannot continue."
+exit 5
+fi
+
 ;;
 
 Cancel)
