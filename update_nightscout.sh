@@ -25,8 +25,7 @@ clear #  Clear the screen before placing the next dialog on.
 while :
 do
 clear
-Choice=$(dialog --colors --nocancel --nook --menu "     \Zr Developed by the xDrip team \Zn\n\n\
-Use the arrow keys to move the cursor.  Press Enter to proceed with the highlighted option.  Press Escape to cancel.\n\n" 14 50 3\
+Choice=$(dialog --colors --nocancel --nook --menu "     \Zr Developed by the xDrip team \Zn Use the arrow keys to move the cursor.  Press Enter to proceed with the highlighted option.  Press Escape to cancel." 14 50 3\
 "1" "Install the latest official Nightscout"\
 "2" "Install Nightscout from a GitHub fork (advanced)"\
 "3" "Return to the main menu"\
