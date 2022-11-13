@@ -32,77 +32,17 @@ Use the arrow keys to move the cursor.\n\
 Press Enter to execute the highlighted option.\n\n" 24 50 15\
  "A" "Status"\
  "B" "Nightscout install phase 1 - 9 minutes"\
- "C" "Nightscout install phase 2 - 28 minutes"\
- "D" "Nightscout install phase 3 - 10 minutes"\
- "E" "Edit Nightscout Variables"\
- "F" "Copy data from another Nightscout"\
- "G" "Update scripts"\
- "H" "Backup MongoDB"\
- "I" "Restore MongoDB backup"\
- "J" "Free DNS setup"\
- "K" "Update/Customize Nightscout"\
- "L" "Reboot server (Nightscout)"\
- "M" "Exit to shell (terminal)"\
+ "Cancel" "Exit to shell (terminal)"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
 
 A)
-/xDrip/scripts/Status.sh
+echo "a"
 ;;
 
 B)
-sudo /xDrip/scripts/NS_Install.sh
-;;
-
-C)
-sudo /xDrip/scripts/update_nightscout.sh
-;;
-
-D)
-sudo /xDrip/scripts/NS_Install3.sh
-;;
-
-E)
-/xDrip/scripts/variables.sh
-;;
-
-F)
-sudo /xDrip/scripts/clone_nightscout.sh
-;;
-
-G)
-clear
-/xDrip/scripts/update_scripts.sh
-;;
-
-H)
-/xDrip/scripts/backupmongo.sh
-;;
-
-I)
-/xDrip/scripts/restoremongo.sh
-;;
-
-J)
-clear
-sudo /xDrip/scripts/ConfigureFreedns.sh
-;;
-
-K)
-sudo /xDrip/scripts/update_nightscout.sh
-;;
-
-L)
-dialog --yesno "Are you sure you want to reboot the server?\n
-If you do, all unsaved open files will close without saving.\n"  8 50
-response=$?
-if [ $response = 255 ] || [ $response = 1 ]
-then
-clear
-else
-sudo reboot
-fi
+echo "b"
 ;;
 
 M)
