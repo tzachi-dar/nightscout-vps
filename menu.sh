@@ -76,8 +76,9 @@ sudo /xDrip/scripts/update_nightscout.sh
 ;;
 
 12)
-dialog --yesno "Are you sure you want to reboot the server?\n
-If you do, all unsaved open files will close without saving.\n"  8 50
+dialog --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
+Are you sure you want to reboot the server?\n
+If you do, all unsaved open files will close without saving.\n"  10 50
 response=$?
 if [ $response = 255 ] || [ $response = 1 ]
 then
