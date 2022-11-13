@@ -30,7 +30,7 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
   \n\n
 Use the arrow keys to move the cursor.\n\
 Press Enter to execute the highlighted option.\n\n" 13 50 3\
- "Update" "Install the latest official Nightscout"\
+ "Update" "Install latest official Nightscout"\
  "Customize" "Install from a fork (Advanced)"\
  "Cancel" "Return to main menu"\
  3>&1 1>&2 2>&3)
@@ -38,7 +38,10 @@ Press Enter to execute the highlighted option.\n\n" 13 50 3\
 case $Choice in
 
 Update)
-echo "a"
+# Select the official Nightscout repository. 
+user="nightscout"
+repo="cgm-remote-monitor"
+brnch="master"
 ;;
 
 Customize)
