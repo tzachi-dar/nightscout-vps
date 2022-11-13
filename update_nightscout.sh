@@ -21,7 +21,8 @@ brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
 
-clear
+while :
+do
 Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
@@ -39,6 +40,7 @@ case $Choice in
 user="nightscout"
 repo="cgm-remote-monitor"
 brnch="master"
+break
 ;;
 
 2)
@@ -75,7 +77,7 @@ echo "Missing fork parameters"
 echo "Cannot continue."
 exit 5
 fi
-
+break
 ;;
 
 3)
@@ -83,6 +85,7 @@ exit
 ;;
 
 esac
+done
 
 clear  # Clear the last dialog
 
