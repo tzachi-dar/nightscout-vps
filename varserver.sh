@@ -6,5 +6,5 @@ Copy the URL shown on the following page.  Paste it into a web browser.  You wil
 clear
 
 sudo /xDrip/ConfigServer/run_server_linux.sh
-sleep 30
+sleep 60
  
