@@ -40,6 +40,7 @@ sudo /xDrip/scripts/NS_Install.sh
 ;;
 
 3)
+rm -f /tmp/reboot_after_NSupdate
 sudo /xDrip/scripts/update_nightscout.sh
 ;;
 
@@ -78,6 +79,9 @@ sudo /xDrip/scripts/ConfigureFreedns.sh
 ;;
 
 12)
+cat > /tmp/reboot_after_NSupdate << EOF
+Reboot after update is complete.
+EOF
 sudo /xDrip/scripts/update_nightscout.sh
 ;;
 
