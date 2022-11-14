@@ -9,7 +9,7 @@ a=$(node -v)
 if [ "$a" = ""  ]
 then
 clear
-dialog --colors --msgbox "     \Zb\Z1 Developed by the xDrip team \zn\n\n\
+dialog --colors --msgbox "     \Zr Developed by the xDrip team \zn\n\n\
 You need to complete installation phase 1 first." 9 50
 exit
 fi
