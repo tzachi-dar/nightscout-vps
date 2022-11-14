@@ -83,8 +83,7 @@ fi
 if [ $go_back -lt 1 ]
 then
   got_them=1
-fi  
-fi  
+fi
 ;;
 
 3)
