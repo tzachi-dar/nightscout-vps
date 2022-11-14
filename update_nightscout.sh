@@ -59,29 +59,31 @@ VALUES=$(dialog --colors --ok-label "Submit" --form "     \Zr Developed by the x
 response=$?
 if [ $response = 255 ] || [ $response = 1 ] # Exit if escaped or cancelled
 then
-go_back=1
   clear
-  dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
-  You need to enter all three parameters.  Try again."  8 50
+  exit 5
 fi
 
 # close fd
 exec 3>&-
 
 if [ $go_back -lt 1 ]
-then
+then 
   # Assign the entered values to corresponding parameters 
   user=$(echo "$VALUES" | sed -n 1p)
   repo=$(echo "$VALUES" | sed -n 2p)
   brnch=$(echo "$VALUES" | sed -n 3p)
   if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ] # Abort if either paramter was left blank. 
   then
-  clear # clear before exiting
-  echo "Missing fork parameters"
-  echo "Cannot continue."
-  exit 5
+    go_back=1
+    clear
+    dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
+    You need to enter all three parameters.  Try again."  8 50
   fi
+fi
+if [ $go_back -lt 1 ]
+then
   got_them=1
+fi  
 fi  
 ;;
 
