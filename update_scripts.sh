@@ -10,7 +10,7 @@ Test=1 ########################### This line must be commented out before submit
 
 cd /tmp
 
-if [ $Test -gt 0 ] # Are we testing?  This variable is defined in the bootstrap file.
+if [ $Test -gt 0 ] # Are we testing?  
 then
 if [ -s ./cgm-remote-monitor ]
 then
@@ -31,10 +31,16 @@ fi
 
 sudo git pull
 sudo chmod 755 *.sh # Change premissions to allow execution by all.
+rm -f /xDrip/scripts/*.sh # Remove the existing sh files
 sudo mv -f *.sh /xDrip/scripts # Overwrite the scripts in the scripts directory with the new ones.
+rm -rf /xDrip/ConfigServer # Remove the existing ConfigServer directory
+sudo mv ConfigServer /xDrip/.
 cd ..
 sudo rm -rf nightscout-vps 
 sudo rm -rf cgm-remote-monitor
+
+# Update Configserver
+
 
 if [ ! -s /tmp/nodialog_update_scripts ]
 then
