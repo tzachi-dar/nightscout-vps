@@ -12,7 +12,7 @@ Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
 Use the arrow keys to move the cursor.\n\
-Press Enter to execute the highlighted option.\n\n" 23 50 13\
+Press Enter to execute the highlighted option.\n\n" 24 50 14\
  "1" "Status"\
  "2" "Installation phase 1 - 9 minutes"\
  "3" "Installation phase 2 - 28 minutes"\
