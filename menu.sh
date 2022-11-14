@@ -82,7 +82,7 @@ sudo /xDrip/scripts/update_nightscout.sh
 ;;
 
 13)
-dialog --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
+dialog --colors --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
 Are you sure you want to reboot the server?\n
 If you do, all unsaved open files will close without saving.\n"  10 50
 response=$?
