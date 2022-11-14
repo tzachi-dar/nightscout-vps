@@ -17,15 +17,16 @@ Press Enter to execute the highlighted option.\n\n" 23 50 13\
  "2" "Installation phase 1 - 9 minutes"\
  "3" "Installation phase 2 - 28 minutes"\
  "4" "Installation phase 3 - 10 minutes"\
- "5" "Edit Nightscout Variables"\
- "6" "Copy data from another Nightscout"\
- "7" "Update scripts"\
- "8" "Backup MongoDB"\
- "9" "Restore MongoDB backup"\
- "10" "FreeDNS Setup"\
- "11" "Update/Customize Nightscout"\
- "12" "Reboot server (Nightscout)"\
- "13" "Exit to shell (terminal)"\
+ "5" "Edit variables"\
+ "6" "Edit variables in a browser"\
+ "7" "Copy data from another Nightscout"\
+ "8" "Update scripts"\
+ "9" "Backup MongoDB"\
+ "10" "Restore MongoDB backup"\
+ "11" "FreeDNS Setup"\
+ "12" "Update/Customize Nightscout"\
+ "13" "Reboot server (Nightscout)"\
+ "14" "Exit to shell (terminal)"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
@@ -51,32 +52,36 @@ sudo /xDrip/scripts/NS_Install3.sh
 ;;
 
 6)
-sudo /xDrip/scripts/clone_nightscout.sh
+/xDrip/scripts/varserver.sh
 ;;
 
 7)
+sudo /xDrip/scripts/clone_nightscout.sh
+;;
+
+8)
 clear
 sudo /xDrip/scripts/update_scripts.sh
 ;;
 
-8)
+9)
 /xDrip/scripts/backupmongo.sh
 ;;
 
-9)
+10)
 /xDrip/scripts/restoremongo.sh
 ;;
 
-10)
+11)
 clear
 sudo /xDrip/scripts/ConfigureFreedns.sh
 ;;
 
-11)
+12)
 sudo /xDrip/scripts/update_nightscout.sh
 ;;
 
-12)
+13)
 dialog --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
 Are you sure you want to reboot the server?\n
 If you do, all unsaved open files will close without saving.\n"  10 50
@@ -89,7 +94,7 @@ sudo reboot
 fi
 ;;
 
-13)
+14)
 cd /tmp
 clear
 dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
