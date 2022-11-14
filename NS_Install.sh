@@ -23,6 +23,11 @@ exit
 fi
 clear
 
+for loop in 1 2 3 4 5 6 7 8 9
+do
+read -t 0.1 dummy
+done
+
 if [ ! -s /var/SWAP ]
 then
 echo "Creating swap file"
