@@ -106,6 +106,7 @@ then
   echo "Cannot continue."
   exit 5
 fi
+clear
 
 cd /
 if [ -s ./nightscout_start ] # Delete the previous install directory if it exists.
