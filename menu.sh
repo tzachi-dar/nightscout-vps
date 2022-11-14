@@ -7,6 +7,7 @@ echo
 while :
 do
 
+clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
