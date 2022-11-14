@@ -23,11 +23,6 @@ exit
 fi
 clear
 
-for loop in 1 2 3 4 5 6 7 8 9
-do
-read -t 0.1 dummy
-done
-
 if [ ! -s /var/SWAP ]
 then
 echo "Creating swap file"
@@ -57,4 +52,9 @@ echo "Installing Node js"
 
 sudo apt-get install -y nodejs npm
 sudo apt -y autoremove
+
+for loop in 1 2 3 4 5 6 7 8 9
+do
+read -t 0.1 dummy
+done
  
