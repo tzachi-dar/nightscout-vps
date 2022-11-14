@@ -172,7 +172,8 @@ if [ -s /tmp/reboot_after_NSupdate ] # Only reboot if reboot_after_NSupdate file
 then
   sudo reboot # Reboot so that Nightscout starts.
 else
-  dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nInstallation phase 2 is complete.  Press enter to reboot.  Wait 30 seconds and click on retry to reconnect." 13 50
+  clear
+  dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nInstallation phase 2 is complete.  Press enter to reboot.  Wait 30 seconds and click on retry to reconnect." 10 50
   sudo reboot
 fi  
  
