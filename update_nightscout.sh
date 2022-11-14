@@ -76,8 +76,7 @@ then
   then
     go_back=1
     clear
-    dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
-    You need to enter all three parameters.  Try again."  8 50
+    dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nYou need to enter all three parameters.  Try again."  8 50
   fi
 fi
 if [ $go_back -lt 1 ]
