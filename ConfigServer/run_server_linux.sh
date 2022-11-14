@@ -17,7 +17,12 @@ pip install Django
 pip install django-extensions Werkzeug
 pip install qrcode
 
+if test -f "/etc/free-dns.sh"; then
 . /etc/free-dns.sh
+else
+export HOSTNAME=$(ls /etc/letsencrypt/live | grep -v README)
+fi
+
 python3 manage.py migrate  >> /tmp/variables_log 2>&1
 
 #make sure to put this after the migrate, as the migrate might fail.
