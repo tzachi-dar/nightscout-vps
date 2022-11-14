@@ -168,6 +168,8 @@ sleep 30
 done
 EOF
 
-
-sudo reboot # Reboot so that Nightscout starts.
+if [ -s /tmp/reboot_after_NSupdate ] # Only reboot if reboot_after_NSupdate file exists
+then
+  sudo reboot # Reboot so that Nightscout starts.
+fi  
  
