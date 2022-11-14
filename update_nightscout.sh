@@ -122,12 +122,12 @@ sudo git pull
 clear
 
 sudo npm install
-sudo npm run postinstall # Complete the install.
+#sudo npm run postinstall # Complete the install.
 
-for loop in 1 2 3 4 5 6 7 8 9
-do
-read -t 0.1 dummy
-done
+#for loop in 1 2 3 4 5 6 7 8 9
+#do
+#read -t 0.1 dummy
+#done
 
 
 # Create the first section of the Nightscout start script replacing the $repo variable
@@ -162,5 +162,5 @@ sleep 30
 done
 EOF
 
-sudo reboot # Reboot so that Nightscout starts.
+#sudo reboot # Reboot so that Nightscout starts.
  
