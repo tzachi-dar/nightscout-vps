@@ -96,7 +96,7 @@ clear  # Clear the last dialog
 
 # Last chance to stop before any destructive actions.
 dialog --colors --msgbox "    \Zr Developed by the xDrip team \Zn\n\n
-The installation will take about 28 minutes.  Nightscout will be down during that period.  You can cancel by pressing escape now.\n\n\
+The installation will take about 25 minutes.  Nightscout will be down during that period.  You can cancel by pressing escape now.\n\n\
 If you proceed, you can minimize this terminal.  But, please don't close it.  After completion, the server will reboot." 13 50
 response=$?
 if [ $response = 255 ]
