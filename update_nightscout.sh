@@ -21,8 +21,10 @@ brnch="master"
 
 clear #  Clear the screen before placing the next dialog on.
 
-while :
+got_them=0
+while [ $got_them -lt 1 ]
 do
+go_back=0
 Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
@@ -40,7 +42,7 @@ case $Choice in
 user="nightscout"
 repo="cgm-remote-monitor"
 brnch="master"
-break
+got_them=1
 ;;
 
 2)
@@ -57,27 +59,30 @@ VALUES=$(dialog --colors --ok-label "Submit" --form "     \Zr Developed by the x
 response=$?
 if [ $response = 255 ] || [ $response = 1 ] # Exit if escaped or cancelled
 then
-clear # Clear dialog.
-echo "Escape or Cancel"
-echo "Cannot continue."
-exit 5
+go_back=1
+  clear
+  dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
+  You need to enter all three parameters.  Try again."  8 50
 fi
 
 # close fd
 exec 3>&-
 
-# Assign the entered values to corresponding parameters 
-user=$(echo "$VALUES" | sed -n 1p)
-repo=$(echo "$VALUES" | sed -n 2p)
-brnch=$(echo "$VALUES" | sed -n 3p)
-if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ] # Abort if either paramter was left blank. 
+if [ $go_back -lt 1 ]
 then
-clear # clear before exiting
-echo "Missing fork parameters"
-echo "Cannot continue."
-exit 5
-fi
-break
+  # Assign the entered values to corresponding parameters 
+  user=$(echo "$VALUES" | sed -n 1p)
+  repo=$(echo "$VALUES" | sed -n 2p)
+  brnch=$(echo "$VALUES" | sed -n 3p)
+  if [ "$user" = "" ] || [ "$repo" = "" ] || [ "$brnch" = "" ] # Abort if either paramter was left blank. 
+  then
+  clear # clear before exiting
+  echo "Missing fork parameters"
+  echo "Cannot continue."
+  exit 5
+  fi
+  got_them=1
+fi  
 ;;
 
 3)
