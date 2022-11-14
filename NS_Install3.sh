@@ -7,7 +7,7 @@ echo
 if [ ! -s /srv/nightscout-vps ] && [ ! -s /nightscout_start ]
 then
 clear
-dialog --msgbox "     /Zr Developed by the xDrip team \Zn\n\n\
+dialog --colors --msgbox "     /Zr Developed by the xDrip team \Zn\n\n\
 You need to complete installation phase 2 first." 10 51
 exit
 fi
