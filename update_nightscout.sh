@@ -128,7 +128,8 @@ sudo git pull
 clear
 
 sudo npm install
-sudo npm run postinstall # Complete the install.
+sudo npm run generate-keys
+#sudo npm run postinstall # Complete the install.
 
 for loop in 1 2 3 4 5 6 7 8 9
 do
