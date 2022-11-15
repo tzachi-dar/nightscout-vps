@@ -170,12 +170,13 @@ sleep 10
 done
 EOF
 
-if [ -s /tmp/reboot_after_NSupdate ] # Only reboot if reboot_after_NSupdate file exists
+if [ -s /tmp/reboot_after_NSupdate ] # Only reboot if reboot_after_NSupdate file exists.  This is when updating.
 then
   sudo reboot # Reboot so that Nightscout starts.
-else
+else # Show a dialog and wait for approval before rebooting.  This is when installing.
   clear
   dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nInstallation phase 2 is complete.  Press enter to reboot.  Wait 30 seconds and click on retry to reconnect." 10 50
+  clear
   sudo reboot
 fi  
  
