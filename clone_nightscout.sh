@@ -60,7 +60,7 @@ do
         rest_endpoint=${rest_endpoint::-1}
     fi
 
-    read -rep "If you have a read token, enter it now. For example: read-c9b67850b67acf82"$'\n'"If you don't know use a token press enter."$'\n'"read_token:" read_token
+    read -rep "If you have a read token, enter it now. For example: read-c9b67850b67acf82"$'\n'"If you don't know how to use a token press enter."$'\n'"read_token:" read_token
     if [[ ! -z "$read_token" ]]
     then
         echo "Token exists"

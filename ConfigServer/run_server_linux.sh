@@ -11,6 +11,7 @@ export SECRET_KEY=$(uuidgen)
 export ENV_DEBUG=False
 export ENV_TOKEN=$(uuidgen)
 export NS_CONFIG_FILE=/etc/nsconfig
+export SCRIPT_DIR=$( dirname -- "$0"; )
 
 sudo apt-get -y install python3-pip
 pip install Django
@@ -23,7 +24,7 @@ else
 export HOSTNAME=$(ls /etc/letsencrypt/live | grep -v README)
 fi
 
-python3 manage.py migrate  >> /tmp/variables_log 2>&1
+python3 $SCRIPT_DIR/manage.py migrate  >> /tmp/variables_log 2>&1
 
 #make sure to put this after the migrate, as the migrate might fail.
 export KILL_AFTER_IDLE_TIME=900
@@ -36,4 +37,4 @@ echo "The server will run for 15 minutes, and after that will stop (if not used)
 echo
 
 #python3 manage.py runserver 0.0.0.0:3389  >> /tmp/variables_log 2>&1
-python3 manage.py runserver_plus 0.0.0.0:3389 --cert-file $CERT_LOCATION/cert.pem --key-file $CERT_LOCATION/privkey.pem >> /tmp/variables_log 2>&1
+python3 $SCRIPT_DIR/manage.py runserver_plus 0.0.0.0:3389 --cert-file $CERT_LOCATION/cert.pem --key-file $CERT_LOCATION/privkey.pem >> /tmp/variables_log 2>&1
