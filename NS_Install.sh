@@ -13,7 +13,7 @@ exit 5
 fi
 
 Test=0
-Test=1 ################ This line must be commented out before submitting a PR.  ##########################
+#Test=1 ################ This line must be commented out before submitting a PR.  ##########################
 
 clear
 dialog --colors --msgbox "      \Zr Developed by the xDrip team \Zn\n\n\
