@@ -3,7 +3,7 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/u
 
 Test=0
 # Uncomment the following line for testing.
-Test=1 ###################################### This line must be commented out before submitting a PR.  ##########################################
+#Test=1 ###################################### This line must be commented out before submitting a PR.  ##########################################
 # curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_11_16_Test/bootstrap.sh | bash  <---  Only tested this way
 
 echo 
