@@ -13,7 +13,7 @@ exit
 fi
 
 Test=0
-Test=1 ########################## This line must be commented out before submitting a PR. ###################
+#Test=1 ########################## This line must be commented out before submitting a PR. ###################
 
 if [ "`id -u`" != "0" ]
 then
