@@ -68,12 +68,6 @@ then
 cat > /etc/nightscout-start.sh << "EOF"
 #!/bin/sh
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-. /etc/nsconfig
-export MONGO_COLLECTION="entries"
-export MONGO_CONNECTION="mongodb://username:password@localhost:27017/Nightscout"
-export INSECURE_USE_HTTP=true
-export HOSTNAME="127.0.0.1"
-export PORT="1337"
 cd /srv/nightscout-vps
 while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
 do
@@ -83,8 +77,14 @@ done
 sleep 5
 while [ 1 ]
 do
+. /etc/nsconfig
+export MONGO_COLLECTION="entries"
+export MONGO_CONNECTION="mongodb://username:password@localhost:27017/Nightscout"
+export INSECURE_USE_HTTP=true
+export HOSTNAME="127.0.0.1"
+export PORT="1337"
 node server.js
-sleep 30
+sleep 10
 done
 EOF
 
@@ -92,12 +92,6 @@ else # We are testing.
 cat > /etc/nightscout-start.sh << "EOF"
 #!/bin/sh
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-. /etc/nsconfig
-export MONGO_COLLECTION="entries"
-export MONGO_CONNECTION="mongodb://username:password@localhost:27017/Nightscout"
-export INSECURE_USE_HTTP=true
-export HOSTNAME="127.0.0.1"
-export PORT="1337"
 cd /srv/cgm-remote-monitor
 while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
 do
@@ -107,8 +101,15 @@ done
 sleep 5
 while [ 1 ]
 do
+. /etc/nsconfig
+export MONGO_COLLECTION="entries"
+export MONGO_CONNECTION="mongodb://username:password@localhost:27017/Nightscout"
+export INSECURE_USE_HTTP=true
+export HOSTNAME="127.0.0.1"
+export PORT="1337"
+
 node server.js
-sleep 30
+sleep 10
 done
 EOF
 
