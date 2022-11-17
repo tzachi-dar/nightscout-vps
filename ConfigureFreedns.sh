@@ -147,8 +147,10 @@ if ! grep -q "DIRECTURL" /etc/rc.local; then
     echo wget -O /tmp/freedns.txt --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 \$DIRECTURL >>  /etc/rc.local
 fi
 
+dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
+Press enter to proceed.  Please be patient as it may take up to 10 minutes to complete." 8 50
+clear
 # wait for the ip to be updated. This might take up to 10 minutes.
-
 cnt=0
 while : ; do
     sleep 30
@@ -175,5 +177,14 @@ while : ; do
 done
 
 #Fix the certificate using the new host name.
-sudo certbot --nginx -d "$hostname" --redirect 
+sudo certbot --nginx -d "$hostname" --redirect --agree-tos --no-eff-email
+
+if [ ! -s /etc/letsencrypt/live/"$hostname"/cert.pem ] || [ ! -s /etc/letsencrypt/live/"$hostname"/privkey.pem ]
+then
+cat > /tmp/FreeDNS_Failed << EOF
+Internal error.  Must run FreeDNS again.
+EOF
+
+dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nInternal error.  Press enter to exit.  Then, run FreeDNS Setup again" 9 50
+fi
  
