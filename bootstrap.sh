@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/bootstrap.sh | bash  <---  Only tested this way
+Test=0
+# Uncomment the following line for testing.
+Test=1 ###################################### This line must be commented out before submitting a PR.  ##########################################
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_11_16_Test/bootstrap.sh | bash  <---  Only tested this way
 
 echo 
 echo "Bootstrapping the menu - Navid200"
@@ -23,7 +26,7 @@ sudo apt-get install -y  git python gcc g++ make
 sudo apt-get -y install netcat
 
 cd /
-if [ ! -s xDrip ]
+if [ ! -s xDrip ] # Create the xDrip directory if it does not exist.
 then
 sudo mkdir xDrip
 fi
@@ -34,9 +37,18 @@ sudo mkdir scripts
 fi
 
 cd /tmp
+if [ ./update_scripts.sh ]
+then
 sudo rm update_scripts.sh
-#wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/VerifyVM_Test/update_scripts.sh # Navid's
+fi
+
+if [ $Test -gt 0 ]
+then
+wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_11_16_Test/update_scripts.sh # Test
+else
 wget https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/update_scripts.sh # Main
+fi
+
 if [ ! -s update_scripts.sh ]
 then
 echo "UNABLE TO DOWNLOAD update_scripts SCRIPT! - cannot continue - please try again!"
@@ -52,7 +64,7 @@ Don't show dialog
 
 EOF
 
-sudo /xDrip/scripts/update_scripts.sh
+/xDrip/scripts/update_scripts.sh
 
 # So that the menu comes up as soon as the user logs in (opens a terminal)
 cd /tmp
@@ -80,7 +92,6 @@ Please take a note, delete the virtual machine, and create a new one.   For more
 
 # Bring up the status page
 /xDrip/scripts/Status.sh
-dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
-Press enter to restart the server.  This will result in an expected error message.  Wait 30 seconds before clicking on retry to reconnect." 10 50
-sudo reboot
+clear
+/xDrip/scripts/menu.sh
  
