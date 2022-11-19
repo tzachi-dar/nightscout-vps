@@ -7,61 +7,65 @@ echo
 while :
 do
 
+clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
       \Zr Developed by the xDrip team \Zn\
   \n\n
 Use the arrow keys to move the cursor.\n\
-Press Enter to execute the highlighted option.\n\n" 22 50 12\
- "1" "Initial Nightscout install"\
- "2" "noip.com association"\
- "3" "Edit Nightscout Variables"\
- "4" "Copy data from another Nightscout"\
- "5" "Update/Customize Nightscout"\
- "6" "Update scripts"\
- "7" "Backup MongoDB"\
- "8" "Restore MongoDB backup"\
- "9" "Status"\
+Press Enter to execute the highlighted option.\n\n" 24 50 14\
+ "1" "Status"\
+ "2" "Installation phase 1 - 15 minutes"\
+ "3" "Installation phase 2 - 5 minutes"\
+ "4" "Edit variables"\
+ "5" "Edit variables in a browser"\
+ "6" "Copy data from another Nightscout"\
+ "7" "Update scripts"\
+ "8" "Backup MongoDB"\
+ "9" "Restore MongoDB backup"\
  "10" "FreeDNS Setup"\
- "11" "Reboot server (Nightscout)"\
- "12" "Exit to shell (terminal)"\
+ "11" "Customize Nightscout"\
+ "12" "Reboot server (Nightscout)"\
+ "13" "Exit to shell (terminal)"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
 
 1)
-sudo /xDrip/scripts/NS_Install.sh
+/xDrip/scripts/Status.sh
 ;;
 
 2)
-sudo /xDrip/scripts/NS_Install2.sh
+sudo /xDrip/scripts/NS_Install.sh
 ;;
 
 3)
-/xDrip/scripts/variables.sh
+sudo /xDrip/scripts/NS_Install2.sh
 ;;
 
 4)
-sudo /xDrip/scripts/clone_nightscout.sh
+/xDrip/scripts/variables.sh
 ;;
 
 5)
-sudo /xDrip/scripts/update_nightscout.sh
+/xDrip/scripts/varserver.sh
 ;;
 
 6)
-/xDrip/scripts/update_scripts.sh
+clear
+sudo /xDrip/scripts/clone_nightscout.sh
 ;;
 
 7)
-/xDrip/scripts/backupmongo.sh
+clear
+sudo /xDrip/scripts/update_scripts.sh
 ;;
 
 8)
-/xDrip/scripts/restoremongo.sh
+/xDrip/scripts/backupmongo.sh
 ;;
 
 9)
-/xDrip/scripts/Status.sh
+/xDrip/scripts/restoremongo.sh
 ;;
 
 10)
@@ -70,8 +74,13 @@ sudo /xDrip/scripts/ConfigureFreedns.sh
 ;;
 
 11)
-dialog --yesno "Are you sure you want to reboot the server?\n
-If you do, all unsaved open files will close without saving.\n"  8 50
+sudo /xDrip/scripts/update_nightscout.sh
+;;
+
+12)
+dialog --colors --yesno "     \Zr Developed by the xDrip team \Zn\n\n\
+Are you sure you want to reboot the server?\n
+If you do, all unsaved open files will close without saving.\n"  10 50
 response=$?
 if [ $response = 255 ] || [ $response = 1 ]
 then
@@ -81,11 +90,11 @@ sudo reboot
 fi
 ;;
 
-12)
+13)
 cd /tmp
 clear
-dialog --msgbox "You will now exit to the shell (terminal).\n\
-To return to the menu, enter menu in the terminal." 7 54
+dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
+You will now exit to the shell (terminal).  To return to the menu, enter menu in the terminal." 9 50
 clear
 exit
 ;;
