@@ -41,12 +41,16 @@ if [ ./update_scripts.sh ]
 then
 sudo rm update_scripts.sh
 fi
+rm -fr nightscout-vps
 
 if [ $Test -gt 0 ]
 then
 wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_11_16_Test/update_scripts.sh # Test
 else
-wget https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/update_scripts.sh # Main
+git clone https://github.com/jamorham/nightscout-vps.git nightscout-vps
+cd nightscout-vps
+git checkout vps-1
+
 fi
 
 if [ ! -s update_scripts.sh ]
