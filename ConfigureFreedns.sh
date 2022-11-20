@@ -183,10 +183,10 @@ for i in {1..4}
 do
     for j in {1..1000}
     do
-    read -t 0.001 dummy
+    read -t 0.001 dummy < /dev/tty
     done
 
-    sudo certbot --nginx -d "$hostname" --redirect --agree-tos --no-eff-email
+    sudo certbot --nginx -d "$hostname" --redirect --agree-tos --no-eff-email < /dev/tty
 
     if [ ! -s /etc/letsencrypt/live/"$hostname"/cert.pem ] || [ ! -s /etc/letsencrypt/live/"$hostname"/privkey.pem ]
     then

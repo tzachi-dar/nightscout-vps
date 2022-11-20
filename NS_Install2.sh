@@ -122,15 +122,15 @@ echo "If you would like to change it please enter the new secret now or hit ente
 
 for j in {1..1000}
 do
-read -t 0.001 dummy
+read -t 0.001 dummy < /dev/tty
 done
-read -p "New secret 12 character minimum length (blank to skip change) : " ns
+read -p "New secret 12 character minimum length (blank to skip change) : " ns < /dev/tty
 
 if [ "$ns" != "" ]
 then
 while [ ${#ns} -lt 12 ] && [ "$ns" != "" ]
 do
-read -p "Needs to be at least 12 chars - try again: " ns
+read -p "Needs to be at least 12 chars - try again: " ns < /dev/tty
 done
 if [ "$ns" != "" ]
 then
