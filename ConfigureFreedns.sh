@@ -177,14 +177,28 @@ while : ; do
 done
 
 #Fix the certificate using the new host name.
-sudo certbot --nginx -d "$hostname" --redirect --agree-tos --no-eff-email
 
-if [ ! -s /etc/letsencrypt/live/"$hostname"/cert.pem ] || [ ! -s /etc/letsencrypt/live/"$hostname"/privkey.pem ]
-then
-cat > /tmp/FreeDNS_Failed << EOF
+
+for i in {1..4}
+do
+    for j in {1..1000}
+    do
+    read -t 0.001 dummy
+    done
+
+    sudo certbot --nginx -d "$hostname" --redirect --agree-tos --no-eff-email
+
+    if [ ! -s /etc/letsencrypt/live/"$hostname"/cert.pem ] || [ ! -s /etc/letsencrypt/live/"$hostname"/privkey.pem ]
+    then
+
+         echo freedns failed sleeping 
+         sleep 60
+    else
+        # worked, geting out of the loop.
+        exit 1
+    fi
+done cat > /tmp/FreeDNS_Failed << EOF
 Internal error.  Must run FreeDNS again.
 EOF
 
 dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nInternal error.  Press enter to exit.  Then, run FreeDNS Setup again" 9 50
-fi
- 
