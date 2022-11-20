@@ -195,9 +195,10 @@ do
          sleep 60
     else
         # worked, geting out of the loop.
-        exit 1
+        exit 0
     fi
-done cat > /tmp/FreeDNS_Failed << EOF
+done 
+cat > /tmp/FreeDNS_Failed << EOF
 Internal error.  Must run FreeDNS again.
 EOF
 
