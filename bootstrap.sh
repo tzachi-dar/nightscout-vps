@@ -97,5 +97,5 @@ Please take a note, delete the virtual machine, and create a new one.   For more
 # Bring up the status page
 /xDrip/scripts/Status.sh
 clear
-/xDrip/scripts/menu.sh
+/xDrip/scripts/menu.sh < /dev/tty
  
