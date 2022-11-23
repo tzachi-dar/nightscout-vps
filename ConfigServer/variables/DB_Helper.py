@@ -1,6 +1,5 @@
 import os
 import sys
-import pathlib
 import re
 from json import loads
 
@@ -22,20 +21,13 @@ class DB:
         self.possible_items = []
 
     def parse_line(line):
-        line = line.replace("export ", "")
-        params = line.split("=")
-        try:
-            key = params[0]
-            value = params[1].replace('"', '')
-        except:
-            return None
-        return Object(key, value)
-
-        match = re.match("export *(.*)=[\"'](.*)[\"']", line)
+        #print("in parse line", line,  ":".join("{:02x}".format(ord(c)) for c in line))
+        line = line.replace("'", "")
+        match = re.match("export *(.*)=[\"'](.*)[\"']", line, re.MULTILINE|re.DOTALL)
         if match:
             return Object(match.group(1), match.group(2))
         else:
-            match = re.match("export *(.*)=(.*)", line)
+            match = re.match("export *(.*)=(.*)", line, re.MULTILINE|re.DOTALL)
             if match:
                 return Object(match.group(1), match.group(2))
         return None
@@ -55,10 +47,7 @@ class DB:
         lines = file.read().split("export")  # can not read two-line value correctly.
         del lines[0]
         file.close()
-        file = open(r"..\app.json", "r")
-        js = file.read()
-        file.close()
-        js = loads(js)["env"]
+        js = read_app_json()
         for line in lines:
             line = line.strip()
             item = DB.parse_line("export " + line)
@@ -77,7 +66,7 @@ class DB:
                 else:
                     items.append(item)
             else:
-                item.description = "Key was not used before."
+                item.description = "--no descrition--"
                 new_items.append(item)
 
         items = requireds + items + new_items  # so new keys would appear in the end of the table
@@ -87,7 +76,10 @@ class DB:
         return items;
 
     def convert_item(self, item):
-        return str('export ' + item.key + '="' + str(item.value.replace("\r", "")) + '"')
+        #val = item.value.replace("\r", "")
+        #val = val.replace("'", "'\''") # make sure that we escape ' signs. See https://stackoverflow.com/questions/1250079/how-to-escape-single-quotes-within-single-quoted-strings
+        val = item.value.replace("'","")
+        return str('export ' + item.key + "='" +val + "'")
 
     def append_item(self, item):
         file = open(self.path, "a")
@@ -119,10 +111,27 @@ class DB:
         file.writelines(file_lines)
         file.close()
 
+def read_app_json():
+    APP_JSON_FILE = os.environ.get('APP_JSON_FILE')
+    if not APP_JSON_FILE:
+        print("system must load with APP_JSON_FILE. use \"export APP_JSON_FILE=/path/to/file\" before starting")
+        os._exit(1)
+
+    if not os.path.exists(APP_JSON_FILE):
+        print("app.json File not found ", APP_JSON_FILE)
+        return []
+    with open(APP_JSON_FILE, "r") as file:
+        js = file.read()
+    print(js)
+    return  loads(js)["env"]
+
+
 def test_line(line, expected_key, expected_val):
     out = DB.parse_line(line)
     if out.key != expected_key or out.value != expected_val:
         print("test failed for line", line, "out.key=", out.key, "out.value=", out.value)
+        print("expected value", expected_val,  ":".join("{:02x}".format(ord(c)) for c in expected_val))
+        print("actual value  ",   out.value,  ":".join("{:02x}".format(ord(c)) for c in out.value))
 
 
 def test_re():
@@ -132,10 +141,18 @@ def test_re():
     test_line('export xxx="1 2"', "xxx", "1 2")
     test_line('export xxx=1 2', "xxx", "1 2")
     test_line('export xxx="1 \"2"', "xxx", "1 \"2")
-    test_line('export xxx="1 \'*\'2"', "xxx", "1 '*'2")
+    test_line('export xxxb="1 \'*\'2"', "xxxb", "1 *2")
     # does not work test_line('export xxx="1 "*"2"', "xxx", "1")
     test_line("export xxx='1'", "xxx", "1")
     test_line("export xxx='1 \"2'", "xxx", "1 \"2")
+    test_line("export xxx=1abc\ndef", "xxx", "1abc\ndef")
+    test_line("export xxx='2abc\ndef'", "xxx", "2abc\ndef")
+    test_line("export xxx='3abc\ndef\n'", "xxx", "3abc\ndef\n")
+    test_line("export xxx='4abc \ndef\n '", "xxx", "4abc \ndef\n ")
+    test_line("export xxx='5abc @&*$%\ndef\n '", "xxx", "5abc @&*$%\ndef\n ")
+    test_line("export xxx='1\r'", "xxx", "1\r")
+    test_line("export xxxa='1'\''", "xxxa", "1")
+
 
 
 if __name__ == "__main__":
