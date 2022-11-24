@@ -128,7 +128,8 @@ clear
 
 IFS='|'
 read -a split <<< $FLine
-hostname=${split[0]}
+#make sure hostname is in lowercase
+hostname=${split[0],,}
 directurl=${split[2]}
 
 #create a file to store the data for the startup script.
