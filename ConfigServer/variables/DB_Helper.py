@@ -79,6 +79,7 @@ class DB:
         #val = item.value.replace("\r", "")
         #val = val.replace("'", "'\''") # make sure that we escape ' signs. See https://stackoverflow.com/questions/1250079/how-to-escape-single-quotes-within-single-quoted-strings
         val = item.value.replace("'","")
+        val = val.replace("\r", "")
         return str('export ' + item.key + "='" +val + "'")
 
     def append_item(self, item):
