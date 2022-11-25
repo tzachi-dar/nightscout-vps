@@ -12,9 +12,6 @@ echo "Cannot continue.."
 exit 5
 fi
 
-Test=0
-#Test=1 ################ This line must be commented out before submitting a PR.  ##########################
-
 clear
 dialog --colors --msgbox "      \Zr Developed by the xDrip team \Zn\n\n\
 Some required packages will be installed now.  It will take about 15 minutes to complete.  This terminal needs to be kept open.  Press enter to proceed.\n\n\
@@ -61,20 +58,9 @@ sudo apt -y autoremove
 cd /srv
 
 echo "Installing Nightscout"
-
-if [ $Test -lt 1 ] # We are not testing.
-then
-
-sudo git clone https://github.com/jamorham/nightscout-vps.git
-cd nightscout-vps
-sudo git checkout vps-1
-else # We are testing.
-
-sudo git clone https://github.com/Navid200/cgm-remote-monitor.git
-cd cgm-remote-monitor
-sudo git checkout Navid_2022_11_16_Test
-fi
-sudo git pull
+cd "$(< repo)" 
+sudo git reset --hard  # delete any local edits.
+sudo git pull  # Update database from remote.
 
 sudo npm install
 sudo npm run generate-keys
