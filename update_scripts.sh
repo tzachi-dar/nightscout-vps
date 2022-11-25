@@ -14,9 +14,9 @@ sudo git reset --hard  # delete any local edits.
 sudo git pull  # Update database from remote.
 
 sudo chmod 755 *.sh # Change premissions to allow execution by all.
-rm -f /xDrip/scripts/*.sh # Remove the existing sh files
+sudo rm -f /xDrip/scripts/*.sh # Remove the existing sh files
 sudo cp *.sh /xDrip/scripts # Overwrite the scripts in the scripts directory with the new ones.
-rm -rf /xDrip/ConfigServer # Remove the existing ConfigServer directory
+sudo rm -rf /xDrip/ConfigServer # Remove the existing ConfigServer directory
 sudo cp -r ConfigServer /xDrip/.
 cd ..
 
