@@ -1,14 +1,24 @@
 #!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-
-Test=0
-# Uncomment the following line for testing.
-#Test=1 ###################################### This line must be commented out before submitting a PR.  ##########################################
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_11_16_Test/bootstrap.sh | bash  <---  Only tested this way
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/TestMethod/bootstrap.sh | bash
 
 echo 
-echo "Bootstrapping the menu - Navid200"
+echo "Bootstrapping the installation files - Navid200"
 echo
+
+if [ ! -z "$(ls /srv)" ]
+then
+clear
+dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
+The script you are running, \"bootstrap\", is meant to initiate an installtion.  However, the file system does not seem to be empty.\n\n\
+If you already have an installtion on this machine and proceed by pressing enter, it will be modified.  If that's not your intention, please press escape to abort." 15 50
+if [ $? -eq 255 ]
+then
+clear
+exit
+fi
+fi
+clear
 
 sudo apt-get update
 sudo apt-get install dialog
@@ -26,32 +36,33 @@ sudo apt-get install -y  git python gcc g++ make
 sudo apt-get -y install netcat
 
 cd /
-if [ ! -s xDrip ] # Create the xDrip directory if it does not exist.
-then
+sudo rm -rf xDrip
 sudo mkdir xDrip
-fi
 cd xDrip
-if [ ! -s scripts ]
-then
 sudo mkdir scripts
-fi
 
-cd /tmp
-if [ ./update_scripts.sh ]
-then
-sudo rm update_scripts.sh
-fi
-rm -fr nightscout-vps
+cd /srv
+sudo rm -rf *
+#sudo git clone https://github.com/jamorham/nightscout-vps.git  # ✅✅✅✅✅ Main - Uncomment before PR.
+sudo git clone https://github.com/Navid200/cgm-remote-monitor.git  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
-if [ $Test -gt 0 ]
-then
-wget https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Navid_2022_11_16_Test/update_scripts.sh # Test
-else
-git clone https://github.com/jamorham/nightscout-vps.git nightscout-vps
-cd nightscout-vps
-git checkout vps-1
+ls > /tmp/repo
+sudo mv -f /tmp/repo .    # The repository name is now in /srv/repo
+cd "$(< repo)"
+#sudo git checkout vps-1  # ✅✅✅✅✅ Main - Uncomment before PR.
+sudo git checkout TestMethod  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
-fi
+sudo git branch > /tmp/branch
+grep "*" /tmp/branch | awk '{print $2}' > /tmp/brnch
+sudo mv -f /tmp/brnch ../.  # The branch name is now in /srv/brnch
+
+sudo git remote -v > /tmp/username
+grep "fetch" /tmp/username | awk '{print $2}' >/tmp/username2
+FLine=$(</tmp/username2)
+IFS='/'
+read -a split <<< $FLine
+echo ${split[3]} > /tmp/username 
+sudo mv -f /tmp/username ../.
 
 if [ ! -s update_scripts.sh ]
 then
@@ -59,8 +70,8 @@ echo "UNABLE TO DOWNLOAD update_scripts SCRIPT! - cannot continue - please try a
 exit 5
 fi
 
-sudo chmod 755 update_scripts.sh
-sudo mv -f update_scripts.sh /xDrip/scripts
+sudo chmod 755 *.sh
+sudo cp -f update_scripts.sh /xDrip/scripts
 
 # Updating the scripts
 cat > /tmp/nodialog_update_scripts << EOF
@@ -98,4 +109,4 @@ Please take a note, delete the virtual machine, and create a new one.   For more
 /xDrip/scripts/Status.sh
 clear
 /xDrip/scripts/menu.sh < /dev/tty
- 
+  
