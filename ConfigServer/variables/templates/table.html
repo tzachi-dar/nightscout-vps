@@ -274,9 +274,10 @@
                 modal.style.display = "none";
         }
         function toggleChangeModal(key, value, defaultValue = false){
-            console.log("Function called", key, value);
+            value = escape(value)
             value = value.replaceAll("<p>", "")
             value = value.replaceAll("</p>", "")
+            value = value.replaceAll("<\\/p>", "")
             value = value.replaceAll("<br>", "\n")
             document.getElementById("changedVal").value = value;
             changeBtn = document.getElementById("change");
@@ -338,6 +339,18 @@
                 btn.innerHTML = "Click Here To show some useful keys"
             }
         }
+
+        escape = function (str) {
+            return str
+                .replace(/[\\]/g, '\\\\')
+                .replace(/[\"]/g, '\\\"')
+                .replace(/[\/]/g, '\\/')
+                .replace(/[\b]/g, '\\b')
+                .replace(/[\f]/g, '\\f')
+                .replace(/[\n]/g, '\\n')
+                .replace(/[\r]/g, '\\r')
+                .replace(/[\t]/g, '\\t');
+        };
 
     </script>
 </body>
