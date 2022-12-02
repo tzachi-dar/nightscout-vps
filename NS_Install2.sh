@@ -12,9 +12,6 @@ You need to complete installation phase 1 first." 9 50
 exit
 fi
 
-Test=0
-#Test=1 ########################## This line must be commented out before submitting a PR. ###################
-
 if [ "`id -u`" != "0" ]
 then
 echo "Script needs root - use sudo bash NS_Install2.sh"
@@ -38,7 +35,6 @@ echo "Nginx config already patched"
 fi
 
 sudo service nginx start
-# sudo certbot --nginx -d "$hostname" --redirect  # We are doing this in ConfigureFreedns.sh
 
 sudo systemctl daemon-reload
 sudo systemctl start mongodb
@@ -62,9 +58,6 @@ EOF
 
 fi
 
-if [ $Test -lt 1 ] # If we are not testing.
-then
-
 cat > /etc/nightscout-start.sh << "EOF"
 #!/bin/sh
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -74,7 +67,8 @@ export MONGO_CONNECTION="mongodb://username:password@localhost:27017/Nightscout"
 export INSECURE_USE_HTTP=true
 export HOSTNAME="127.0.0.1"
 export PORT="1337"
-cd /srv/nightscout-vps
+cd /srv
+cd "$(< repo)" 
 while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
 do
 echo "Waiting for mongo to start"
@@ -87,32 +81,6 @@ node server.js
 sleep 30
 done
 EOF
-
-else # We are testing.
-cat > /etc/nightscout-start.sh << "EOF"
-#!/bin/sh
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-. /etc/nsconfig
-export MONGO_COLLECTION="entries"
-export MONGO_CONNECTION="mongodb://username:password@localhost:27017/Nightscout"
-export INSECURE_USE_HTTP=true
-export HOSTNAME="127.0.0.1"
-export PORT="1337"
-cd /srv/cgm-remote-monitor
-while [ "`netstat -lnt | grep 27017 | grep -v grep`" = "" ]
-do
-echo "Waiting for mongo to start"
-sleep 5
-done
-sleep 5
-while [ 1 ]
-do
-node server.js
-sleep 30
-done
-EOF
-
-fi
 
 cs=`grep 'API_SECRET=' /etc/nsconfig | head -1 | cut -f2 -d'"'`
 

@@ -64,22 +64,40 @@ then
 http="\Zb\Z1Closed\Zn"
 fi
 
-
 mongo="$(mongod --version | sed -n 1p)"
 ns="$(ps -ef | grep SCREEN | grep root | fold --width=40 | sed -n 1p)"
 
+uname="$(< /srv/username)"
+if [ ! "$(< /srv/username)" = "jamorham" ]
+then
+uname="\Zb\Z1$(< /srv/username)\Zn"
+fi
+
+repo="$(< /srv/repo)"
+if [ ! "$(< /srv/repo)" = "nightscout-vps" ]
+then
+repo="\Zb\Z1$(< /srv/repo)\Zn"
+fi
+
+branch="$(< /srv/brnch)"
+if [ ! "$(< /srv/brnch)" = "vps-1" ]
+then
+branch="\Zb\Z1$(< /srv/brnch)\Zn"
+fi
+
+
 dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
                 \Zb Status \Zn\n\n\
-  \ZbVirtual Machine\Zn\n\
 Zone: "$Zone" \n\
 RAM: $Ramsize \n\
 Disk type: "$disk" \n\
 Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
-HTTP & HTTPS:  $http \n\n\
+HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
+/$uname/$repo/$branch\n\
 Swap: $swap \n\
 Mongo: $mongo \n\
 NS proc: $ns \n\
- " 21 50
+ " 22 50
  

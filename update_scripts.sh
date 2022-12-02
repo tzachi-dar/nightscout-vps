@@ -1,46 +1,43 @@
 #!/bin/bash
 
+# This should never be called before first being updated to the latest remote release.
+# Currently, only bootstrap and menu call this.  Both update this file before calling it.
+# If you decide to call this anywhere else, make sure to update the local copy before calling it.
+
 echo
 echo "Fetch the latest scripts from GitHub - Navid200"
 echo
 
-Test=0
-# Comment out the next line before submission.
-#Test=1 ########################### This line must be commented out before submitting a PR #########
-
-cd /tmp
-
-if [ $Test -gt 0 ] # Are we testing?  
+if [ ! -s /srv/repo ]  # Create the file containing the repository name if nonexistent.
 then
-if [ -s ./cgm-remote-monitor ]
-then
-sudo rm -r cgm-remote-monitor
+cat > /srv/repo << EOF
+nightscout-vps
+EOF
 fi
-sudo git clone https://github.com/Navid200/cgm-remote-monitor.git # Test
-cd cgm-remote-monitor
-sudo git checkout Navid_2022_11_16_Test
-else # If we are not testing
-if [ -s ./nightscout-vps ]
+if [ ! -s /srv/brnch ]  # Create the file containing the branch name if nonexistent.
 then
-sudo rm -r nightscout-vps
+cat > /srv/brnch << EOF
+vps-1
+EOF
 fi
-sudo git clone https://github.com/jamorham/nightscout-vps.git #  Main
-cd nightscout-vps
-sudo git checkout vps-1
+if [ ! -s /srv/username ]  # Create the file containing the user name if nonexistent.
+then
+cat > /srv/username << EOF
+jamorham
+EOF
 fi
 
-sudo git pull
+cd /srv
+cd "$(< repo)" 
+sudo git reset --hard  # delete any local edits.
+sudo git pull  # Update database from remote.
+
 sudo chmod 755 *.sh # Change premissions to allow execution by all.
-rm -f /xDrip/scripts/*.sh # Remove the existing sh files
-sudo mv -f *.sh /xDrip/scripts # Overwrite the scripts in the scripts directory with the new ones.
-rm -rf /xDrip/ConfigServer # Remove the existing ConfigServer directory
-sudo mv ConfigServer /xDrip/.
+sudo rm -f /xDrip/scripts/*.sh # Remove the existing sh files
+sudo cp *.sh /xDrip/scripts # Overwrite the scripts in the scripts directory with the new ones.
+sudo rm -rf /xDrip/ConfigServer # Remove the existing ConfigServer directory
+sudo cp -r ConfigServer /xDrip/.
 cd ..
-sudo rm -rf nightscout-vps 
-sudo rm -rf cgm-remote-monitor
-
-# Update Configserver
-
 
 if [ ! -s /tmp/nodialog_update_scripts ]
 then
