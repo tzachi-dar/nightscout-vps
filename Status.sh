@@ -85,10 +85,32 @@ then
 branch="\Zb\Z1$(< /srv/brnch)\Zn"
 fi
 
+. /etc/free-dns.sh
+if [ "$HOSTNAME" = "" ]
+then
+FD="No hostname"
+else
+registered=$(nslookup $HOSTNAME|tail -n2|grep A|sed s/[^0-9.]//g)
+current=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
+if [ ! "$registered" = "$current" ]
+then
+FD="Mismatch"
+else
+FD="Match"
+fi
+fi
 
-dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
-                \Zb Status \Zn\n\n\
-Zone: "$Zone" \n\
+grep API_SECRET /etc/nsconfig | awk '{print $2}' > /tmp/apisecret
+FLine=$(</tmp/apisecret)
+IFS='"'
+read -a split <<< $FLine
+apisec=${split[1]}
+
+clear
+Choice=$(dialog --colors --nocancel --nook --menu "\
+       \Zr Developed by the xDrip team \Zn\n\n\
+                \Zb Status       2022.12.05 \Zn\n\n\
+Zone: $Zone \n\
 RAM: $Ramsize \n\
 Disk type: "$disk" \n\
 Disk size: $disksz        $DiskUsedPercent used \n\
@@ -99,5 +121,24 @@ HTTP & HTTPS:  $http \n\
 Swap: $swap \n\
 Mongo: $mongo \n\
 NS proc: $ns \n\
- " 22 50
+FreeDNS: $FD
+ " 24 50 2\
+ "1" "Return"\
+ "2" "Hostname and password"\
+ 3>&1 1>&2 2>&3)
+ 
+ case $Choice in
+ 
+ 1)
+exit
+;;
+
+2)
+dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
+        Do not disclose.\n\n\
+FreeDNS hostname:  $HOSTNAME\n\
+API-SECRET: $apisec" 10 50
+;;
+
+esac
  
