@@ -94,25 +94,30 @@ registered=$(nslookup $HOSTNAME|tail -n2|grep A|sed s/[^0-9.]//g)
 current=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
 if [ ! "$registered" = "$current" ]
 then
-FD="Mismatch"
+FD="\Zb\Z1Mismatch\Zn"
 else
 FD="Match"
 fi
 fi
 
-grep API_SECRET /etc/nsconfig | awk '{print $2}' > /tmp/apisecret
-FLine=$(</tmp/apisecret)
-IFS='"'
-read -a split <<< $FLine
-apisec=${split[1]}
+. /etc/nsconfig
+apisec=$API_SECRET
+
+curl https://$HOSTNAME > /tmp/$HOSTNAME.txt
+curl_ret=$?
+if (( curl_ret != 0 )); then
+cert="\Zb\Z1Invalid\Zn"
+else
+cert="Valid"
+fi
 
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
        \Zr Developed by the xDrip team \Zn\n\n\
-                \Zb Status       2022.12.05 \Zn\n\n\
+                \Zb Status       2022.12.06 \Zn\n\n\
 Zone: $Zone \n\
 RAM: $Ramsize \n\
-Disk type: "$disk" \n\
+Disk type: $disk \n\
 Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
@@ -121,8 +126,9 @@ HTTP & HTTPS:  $http \n\
 Swap: $swap \n\
 Mongo: $mongo \n\
 NS proc: $ns \n\
-FreeDNS: $FD
- " 24 50 2\
+FreeDNS name and IP: $FD \n\
+Certificate: $cert \
+ " 25 50 2\
  "1" "Return"\
  "2" "Hostname and password"\
  3>&1 1>&2 2>&3)
@@ -134,8 +140,8 @@ exit
 ;;
 
 2)
-dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
-       \Zb\Z1 Do not disclose.\Zn\n\n\
+dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
+           \Zb\Z1Do not disclose.\Zn\n\n\
 FreeDNS hostname:  $HOSTNAME\n\
 API_SECRET: $apisec" 10 50
 ;;
