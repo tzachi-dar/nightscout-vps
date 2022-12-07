@@ -3,9 +3,8 @@ import sys
 import re
 from json import loads
 
-
 class Object(object):
-    def __init__(self, key, value, description="", default=""):
+    def __init__(self, key="", value="", description="", default=""):
         self.key = key
         self.value = value
         self.description = description
@@ -37,6 +36,11 @@ class DB:
 
 
     def get_items(self):
+        APP_JSON_FILE = os.environ.get('APP_JSON_FILE')
+        if not APP_JSON_FILE:
+            print("system must load with APP_JSON_FILE. use \"export APP_JSON_FILE=/path/to/file\" before starting")
+            os._exit(1)
+
         items = []
         new_items = []
         requireds = []
@@ -47,7 +51,7 @@ class DB:
         lines = file.read().split("export")  # can not read two-line value correctly.
         del lines[0]
         file.close()
-        js = read_app_json()
+        js = read_app_json(APP_JSON_FILE)
         for line in lines:
             line = line.strip()
             item = DB.parse_line("export " + line)
@@ -112,19 +116,15 @@ class DB:
         file.writelines(file_lines)
         file.close()
 
-def read_app_json():
-    APP_JSON_FILE = os.environ.get('APP_JSON_FILE')
-    if not APP_JSON_FILE:
-        print("system must load with APP_JSON_FILE. use \"export APP_JSON_FILE=/path/to/file\" before starting")
-        os._exit(1)
+def read_app_json(app_json_file):
 
-    if not os.path.exists(APP_JSON_FILE):
-        print("app.json File not found ", APP_JSON_FILE)
+    if not os.path.exists(app_json_file):
+        print("app.json File not found ", app_json_file)
         return []
-    with open(APP_JSON_FILE, "r") as file:
+    with open(app_json_file, "r") as file:
         js = file.read()
     print(js)
-    return  loads(js)["env"]
+    return loads(js)["env"]
 
 
 def test_line(line, expected_key, expected_val):

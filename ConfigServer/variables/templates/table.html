@@ -192,7 +192,7 @@
                 
                 <td> <button type="button" onclick="toggleChangeModal('{{ x.key }}', '{{ x.value | linebreaks }}')"> Change Value </button> </td>
                 
-                {% if x.description == "Key was not used before." %}
+                {% if x.description == "--no descrition--" %}
                 <td class="hovertext" data-hover="unknown keys have no default value." > <button disabled="true" name="default" value={{ x.key }}> Set default </button> </td>
                 {% else %}
                 <td> <button type="button" onclick="toggleChangeModal('{{ x.key }}', '{{ x.default}}', true)"> Set default </button> </td>
