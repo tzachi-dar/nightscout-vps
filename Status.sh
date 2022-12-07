@@ -85,6 +85,7 @@ then
 branch="\Zb\Z1$(< /srv/brnch)\Zn"
 fi
 
+HOSTNAME=""
 . /etc/free-dns.sh
 if [ "$HOSTNAME" = "" ]
 then
