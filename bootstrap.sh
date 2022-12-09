@@ -1,6 +1,6 @@
 #!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/TestMethod/bootstrap.sh | bash
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/Utility_Logs/bootstrap.sh | bash
 
 echo 
 echo "Bootstrapping the installation files - Navid200"
@@ -35,10 +35,13 @@ sudo apt-get -y install wget bash
 sudo apt-get install -y  git python gcc g++ make
 sudo apt-get -y install netcat
 
-cd /
-sudo rm -rf xDrip
-sudo mkdir xDrip
-cd xDrip
+if [ ! -s /xDrip ]
+then
+sudo mkdir /xDrip
+fi
+cd /xDrip
+sudo rm -rf scripts
+sudo -rf ConfigServer
 sudo mkdir scripts
 
 cd /srv
@@ -50,7 +53,7 @@ ls > /tmp/repo
 sudo mv -f /tmp/repo .    # The repository name is now in /srv/repo
 cd "$(< repo)"
 sudo git checkout vps-1  # ✅✅✅✅✅ Main - Uncomment before PR.
-#sudo git checkout TestMethod  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
+#sudo git checkout Utility_Logs  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
 sudo git branch > /tmp/branch
 grep "*" /tmp/branch | awk '{print $2}' > /tmp/brnch
@@ -62,7 +65,7 @@ FLine=$(</tmp/username2)
 IFS='/'
 read -a split <<< $FLine
 echo ${split[3]} > /tmp/username 
-sudo mv -f /tmp/username ../.
+sudo mv -f /tmp/username ../. # The username is now in /srv/username
 
 if [ ! -s update_scripts.sh ]
 then
@@ -104,6 +107,11 @@ clear
 dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
 If any item is shown in red on the status page (shown next), it represents an incorrect parameter that could result in malfunction or cost.  \
 Please take a note, delete the virtual machine, and create a new one.   For more detail, please refer to the guide." 12 50
+
+# Add log 
+rm -rf /tmp/Logs
+echo -e "Bootstrap completed     $(date)\n" | cat - /xDrip/Logs > /tmp/Logs
+sudo /bin/cp -f /tmp/Logs /xDrip/Logs
 
 # Bring up the status page
 /xDrip/scripts/Status.sh
