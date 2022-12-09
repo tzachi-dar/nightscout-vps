@@ -39,6 +39,11 @@ sudo rm -rf /xDrip/ConfigServer # Remove the existing ConfigServer directory
 sudo cp -r ConfigServer /xDrip/.
 cd ..
 
+# Add log
+rm -rf /tmp/Logs
+echo -e "The platform has been updated     $(date)\n" | cat - /xDrip/Logs > /tmp/Logs
+sudo /bin/cp -f /tmp/Logs /xDrip/Logs
+
 if [ ! -s /tmp/nodialog_update_scripts ]
 then
 dialog --colors --msgbox "    \Zr Developed by the xDrip team \Zn\n\n\
