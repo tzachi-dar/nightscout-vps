@@ -195,6 +195,10 @@ do
          sleep 60
     else
         # worked, geting out of the loop.
+        # Add log
+        rm -rf /tmp/Logs
+        echo -e "FreeDNS setup completed     $(date)\n" | cat - /xDrip/Logs > /tmp/Logs
+        sudo /bin/cp -f /tmp/Logs /xDrip/Logs
         exit 1
     fi
 done
@@ -203,3 +207,4 @@ Internal error.  Must run FreeDNS again.
 EOF
 
 dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nInternal error.  Press enter to exit.  Then, run FreeDNS Setup again" 9 50
+ 
