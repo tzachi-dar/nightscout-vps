@@ -53,6 +53,8 @@ export ENABLE="careportal food boluscalc bwp cob bgi pump openaps rawbg iob upba
 export AUTH_DEFAULT_ROLES="denied"
 export PUMP_FIELDS="reservoir battery clock"
 export DEVICESTATUS_ADVANCED="true"
+export THEME="colors"
+export DBSIZE_MAX="20000"
 
 EOF
 
