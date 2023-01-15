@@ -66,7 +66,7 @@ fi
 cd /tmp
 clear
 dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
-You will now exit to the shell (terminal).  To return to the menu, enter "menu" in the terminal without the quotes." 9 50
+You will now exit to the shell (terminal).  To return to the menu, enter \"menu\" in the terminal without the quotes." 9 50
 clear
 exit
 ;;
