@@ -8,25 +8,6 @@ echo
 echo "Fetch the latest scripts from GitHub - Navid200"
 echo
 
-if [ ! -s /srv/repo ]  # Create the file containing the repository name if nonexistent.
-then
-cat > /srv/repo << EOF
-nightscout-vps
-EOF
-fi
-if [ ! -s /srv/brnch ]  # Create the file containing the branch name if nonexistent.
-then
-cat > /srv/brnch << EOF
-vps-1
-EOF
-fi
-if [ ! -s /srv/username ]  # Create the file containing the user name if nonexistent.
-then
-cat > /srv/username << EOF
-jamorham
-EOF
-fi
-
 cd /srv
 cd "$(< repo)" 
 sudo git reset --hard  # delete any local edits.
@@ -43,11 +24,4 @@ cd ..
 rm -rf /tmp/Logs
 echo -e "The platform has been updated     $(date)\n" | cat - /xDrip/Logs > /tmp/Logs
 sudo /bin/cp -f /tmp/Logs /xDrip/Logs
-
-if [ ! -s /tmp/nodialog_update_scripts ]
-then
-dialog --colors --msgbox "    \Zr Developed by the xDrip team \Zn\n\n\
-Updated scripts will be in effect in a new window." 8 43
-clear
-fi
  
