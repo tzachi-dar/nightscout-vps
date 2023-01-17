@@ -1,6 +1,6 @@
 #!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/MoreMenu_Test/bootstrap.sh | bash
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/MinimalDetect/bootstrap.sh | bash
 
 echo 
 echo "Bootstrapping the installation files - Navid200"
@@ -23,7 +23,7 @@ clear
 sudo apt-get update
 sudo apt-get install dialog
 ubversion="$(cat /etc/issue | awk '{print $2}')"
-if [[ ! "$ubversion" = "20.04"* ]]
+if [[ ! "$ubversion" = "20.04"* ]] || [[ ! "$(which vi)" = "" ]] # If the selected version of ubuntu is not exactly what we want
 then
 clear
 dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
