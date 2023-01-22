@@ -1,13 +1,18 @@
 #!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/MinimalDetect/bootstrap.sh | bash
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/MinimalDetectFix_test/bootstrap.sh | bash
 
 echo 
 echo "Bootstrapping the installation files - Navid200"
 echo
 
+sudo apt-get update
+sudo apt-get install dialog
+
+ExistingSystem=0
 if [ ! -z "$(ls /srv)" ]
 then
+ExistingSystem=1
 clear
 dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
 The script you are running, \"bootstrap\", is meant to initiate an installtion.  However, the file system does not seem to be empty.\n\n\
@@ -20,16 +25,17 @@ fi
 fi
 clear
 
-sudo apt-get update
-sudo apt-get install dialog
 ubversion="$(cat /etc/issue | awk '{print $2}')"
-if [[ ! "$ubversion" = "20.04"* ]] || [[ ! "$(which vi)" = "" ]] # If the selected version of ubuntu is not exactly what we want
+if [ "$ExistingSystem" = "0" ]  # If this is not an existing installation
 then
-clear
-dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
+  if [[ ! "$ubversion" = "20.04"* ]] || [[ ! "$(which vi)" = "" ]] # If the selected version of ubuntu is not exactly what we want
+  then
+  clear
+  dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
 The Ubuntu version on the virtual machine is incorrect.  You need to delete the virtual machine and create a new one.  Please refer to the guide for the details." 10 50
-exit
-fi
+  exit
+  fi
+fi  
 
 sudo apt-get install -y  git python gcc g++ make
 sudo apt-get -y install netcat
@@ -52,7 +58,7 @@ ls > /tmp/repo
 sudo mv -f /tmp/repo .    # The repository name is now in /srv/repo
 cd "$(< repo)"
 sudo git checkout vps-1  # ✅✅✅✅✅ Main - Uncomment before PR.
-#sudo git checkout Utility_Logs  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
+#sudo git checkout MinimalDetectFix_test  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
 sudo git branch > /tmp/branch
 grep "*" /tmp/branch | awk '{print $2}' > /tmp/brnch
