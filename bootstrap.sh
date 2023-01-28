@@ -51,14 +51,14 @@ sudo mkdir scripts
 
 cd /srv
 sudo rm -rf *
-#sudo git clone https://github.com/jamorham/nightscout-vps.git  # ✅✅✅✅✅ Main - Uncomment before PR.
-sudo git clone https://github.com/Navid200/cgm-remote-monitor.git  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
+sudo git clone https://github.com/jamorham/nightscout-vps.git  # ✅✅✅✅✅ Main - Uncomment before PR.
+#sudo git clone https://github.com/Navid200/cgm-remote-monitor.git  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
 ls > /tmp/repo
 sudo mv -f /tmp/repo .    # The repository name is now in /srv/repo
 cd "$(< repo)"
-#sudo git checkout vps-dev  # ✅✅✅✅✅ Main - Uncomment before PR.
-sudo git checkout DevBranchSetup_Test  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
+sudo git checkout vps-dev  # ✅✅✅✅✅ Main - Uncomment before PR.
+#sudo git checkout DevBranchSetup_Test  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
 sudo git branch > /tmp/branch
 grep "*" /tmp/branch | awk '{print $2}' > /tmp/brnch
