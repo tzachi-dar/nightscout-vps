@@ -1,6 +1,6 @@
 #!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/MinimalDetectFix_test/bootstrap.sh | bash
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/DevBranchSetup_Test/bootstrap.sh | bash
 
 echo 
 echo "Bootstrapping the installation files - Navid200"
@@ -14,9 +14,9 @@ if [ ! -z "$(ls /srv)" ]
 then
 ExistingSystem=1
 clear
-dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
+dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
 The script you are running, \"bootstrap\", is meant to initiate an installtion.  However, the file system does not seem to be empty.\n\n\
-If you already have an installtion on this machine and proceed by pressing enter, it will be modified.  If that's not your intention, please press escape to abort." 15 50
+If you already have an installtion on this machine and proceed by pressing enter, it will be modified.  If that's not your intention, please press escape to abort." 14 50
 if [ $? -eq 255 ]
 then
 clear
@@ -34,11 +34,11 @@ then
   dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
 The Ubuntu version on the virtual machine is incorrect.  You need to delete the virtual machine and create a new one.  Please refer to the guide for the details." 10 50
   exit
-  fi
-fi  
+  fi 
 
-sudo apt-get install -y  git python gcc g++ make
-sudo apt-get -y install netcat
+  sudo apt-get install -y  git python gcc g++ make
+  sudo apt-get -y install netcat
+fi
 
 if [ ! -s /xDrip ]
 then
@@ -57,8 +57,8 @@ sudo git clone https://github.com/jamorham/nightscout-vps.git  # ✅✅✅✅✅
 ls > /tmp/repo
 sudo mv -f /tmp/repo .    # The repository name is now in /srv/repo
 cd "$(< repo)"
-sudo git checkout vps-1  # ✅✅✅✅✅ Main - Uncomment before PR.
-#sudo git checkout MinimalDetectFix_test  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
+sudo git checkout vps-dev  # ✅✅✅✅✅ Main - Uncomment before PR.
+#sudo git checkout DevBranchSetup_Test  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
 sudo git branch > /tmp/branch
 grep "*" /tmp/branch | awk '{print $2}' > /tmp/brnch
@@ -108,10 +108,16 @@ alias menu="/xDrip/scripts/menu.sh"
 EOF
 fi
 
-clear
-dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\n\
+if [ "$ExistingSystem" = "0" ]  # If this is a new installation.
+then
+  clear
+  dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
 If any item above the line on the status page (shown next) is red, it represents an incorrect parameter that could result in malfunction or cost.  \
 Please take a note, delete the virtual machine, and create a new one.   For more detail, please refer to the guide." 13 50
+else # If this is an existing installation.
+  clear
+  dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\nBootstrap is complete.  Press enter to go to the status page." 8 50
+fi
 
 # Add log 
 rm -rf /tmp/Logs
