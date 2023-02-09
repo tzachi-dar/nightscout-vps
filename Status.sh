@@ -80,7 +80,7 @@ repo="\Zb\Z1$(< /srv/repo)\Zn" # Set the color to red if the repository name is 
 fi
 
 branch="$(< /srv/brnch)"
-if [ ! "$(< /srv/brnch)" = "vps-1" ] || [ ! "$(< /srv/brnch)" = "vps-dev" ]
+if [ ! "$(< /srv/brnch)" = "vps-1" ] && [ ! "$(< /srv/brnch)" = "vps-dev" ]
 then
 branch="\Zb\Z1$(< /srv/brnch)\Zn" # Set the color to red if the branch name is not either vps-1 or vps-dev.
 fi
@@ -130,7 +130,7 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.01.28\n\
+Nightscout on Google Cloud: 2023.02.09\n\
 $Missing \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
