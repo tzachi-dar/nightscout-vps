@@ -80,7 +80,7 @@ repo="\Zb\Z1$(< /srv/repo)\Zn" # Set the color to red if the repository name is 
 fi
 
 branch="$(< /srv/brnch)"
-if [ ! "$(< /srv/brnch)" = "vps-1" ] || [ ! "$(< /srv/brnch)" = "vps-dev" ]
+if [ ! "$(< /srv/brnch)" = "vps-1" ] && [ ! "$(< /srv/brnch)" = "vps-dev" ]
 then
 branch="\Zb\Z1$(< /srv/brnch)\Zn" # Set the color to red if the branch name is not either vps-1 or vps-dev.
 fi
@@ -116,8 +116,17 @@ fi
 Missing=""
 if [ "$(which qrencode)" = "" ]
 then
-  Missing="\Zb\Z1Missing packages\Zn"
+  Missing="\Zb\Z1Missing packages  \Zn"
 fi
+
+# Verify that Installation phase 1 has been executed after bootstrap
+Phase1=""
+cd /srv
+cd "$(< repo)"
+if [ ! -s ./node_modules ]
+then
+  Phase1="\Zb\Z1Missing node_modules\Zn"
+fi  
 
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
@@ -130,8 +139,8 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.01.28\n\
-$Missing \n\n\
+Nightscout on Google Cloud: 2023.02.09\n\
+$Missing $Phase1 \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
 Mongo: $mongo \n\

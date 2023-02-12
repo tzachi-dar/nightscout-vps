@@ -1,6 +1,6 @@
 #!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/DevBranchSetup_Test/bootstrap.sh | bash
+# curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/RemoveFreeDNS_Test/bootstrap.sh | bash
 
 echo 
 echo "Bootstrapping the installation files - Navid200"
@@ -26,9 +26,9 @@ fi
 clear
 
 ubversion="$(cat /etc/issue | awk '{print $2}')"
-if [ "$ExistingSystem" = "0" ]  # If this is not an existing installation
+if [ "$ExistingSystem" = "0" ]  # Only if this is not an existing installation
 then
-  if [[ ! "$ubversion" = "20.04"* ]] || [[ ! "$(which vi)" = "" ]] # If the selected version of ubuntu is not exactly what we want
+  if [[ ! "$ubversion" = "20.04"* ]] || [[ ! "$(which vi)" = "" ]] # If the selected version of ubuntu is not what we want or if the main version has been installed instead of minimal
   then
   clear
   dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
@@ -45,12 +45,12 @@ then
 sudo mkdir /xDrip
 fi
 cd /xDrip
-sudo rm -rf scripts
-sudo -rf ConfigServer
+sudo rm -rf scripts # Delete all the scripts
+sudo -rf ConfigServer # Delete the config server
 sudo mkdir scripts
 
 cd /srv
-sudo rm -rf *
+sudo rm -rf * # Delete everything in the /srv directory
 sudo git clone https://github.com/jamorham/nightscout-vps.git  # ✅✅✅✅✅ Main - Uncomment before PR.
 #sudo git clone https://github.com/Navid200/cgm-remote-monitor.git  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
@@ -58,7 +58,7 @@ ls > /tmp/repo
 sudo mv -f /tmp/repo .    # The repository name is now in /srv/repo
 cd "$(< repo)"
 sudo git checkout vps-dev  # ✅✅✅✅✅ Main - Uncomment before PR.
-#sudo git checkout DevBranchSetup_Test  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
+#sudo git checkout RemoveFreeDNS_Test  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
 sudo git branch > /tmp/branch
 grep "*" /tmp/branch | awk '{print $2}' > /tmp/brnch
@@ -80,12 +80,6 @@ fi
 
 sudo chmod 755 *.sh
 sudo cp -f update_scripts.sh /xDrip/scripts
-
-# Updating the scripts
-cat > /tmp/nodialog_update_scripts << EOF
-Don't show dialog
-
-EOF
 
 /xDrip/scripts/update_scripts.sh
 
