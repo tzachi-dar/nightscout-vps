@@ -84,4 +84,9 @@ do
      exit 0
    
 done
+
+# Add log
+rm -rf /tmp/Logs
+echo -e "Copy data process completed.     $(date)\n" | cat - /xDrip/Logs > /tmp/Logs
+sudo /bin/cp -f /tmp/Logs /xDrip/Logs
  
