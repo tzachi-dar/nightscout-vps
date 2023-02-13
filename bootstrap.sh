@@ -3,8 +3,15 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/u
 # curl https://raw.githubusercontent.com/Navid200/cgm-remote-monitor/RemoveFreeDNS_Test/bootstrap.sh | bash
 
 echo 
-echo "Bootstrapping the installation files - Navid200"
+echo "Bootstrapping the installation files - JamOrHam - Navid200"
 echo
+
+# We run bootstrap as the first step of a fresh install.  But, we also run bootstrap on a complete system in order to switch repositories, or branches.
+# Running bootstrap on a complete system is destructive.  It deletes the contents of the /srv directory, some of which are written by Nightscout installation phase 1.
+# What makes this extremely dangerous is that running bootstrap on a working system does not result in a catastrophic failure!  The system remains operational
+# for a while, but, eventually fails.
+# This is why the status page shows "Missing node_modules" in red after bootstrap until node_modules are restored.
+# Regardless, we need to remember this destructive nature of bootstrap.
 
 sudo apt-get update
 sudo apt-get install dialog
@@ -45,12 +52,12 @@ then
 sudo mkdir /xDrip
 fi
 cd /xDrip
-sudo rm -rf scripts # Delete all the scripts
-sudo -rf ConfigServer # Delete the config server
+sudo rm -rf scripts
+sudo -rf ConfigServer
 sudo mkdir scripts
 
 cd /srv
-sudo rm -rf * # Delete everything in the /srv directory
+sudo rm -rf *
 sudo git clone https://github.com/jamorham/nightscout-vps.git  # ✅✅✅✅✅ Main - Uncomment before PR.
 #sudo git clone https://github.com/Navid200/cgm-remote-monitor.git  # ⛔⛔⛔⛔⛔ For test - Comment out before PR.
 
