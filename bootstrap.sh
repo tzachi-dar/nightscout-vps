@@ -7,11 +7,12 @@ echo "Bootstrapping the installation files - JamOrHam - Navid200"
 echo
 
 # We run bootstrap as the first step of a fresh install.  But, we also run bootstrap on a complete system in order to switch repositories, or branches.
-# Running bootstrap on a complete system is destructive.  It deletes the contents of the /srv directory, some of which are written by Nightscout installation phase 1.
+# Running bootstrap on a complete system is destructive.  It deletes the contents of the /srv directory, some of which are written by Install Nightscout phase 1.
 # What makes this extremely dangerous is that running bootstrap on a working system does not result in a catastrophic failure!  The system remains operational
 # for a while, but, eventually fails.
 # This is why the status page shows "Missing node_modules" in red after bootstrap until node_modules are restored.
 # Regardless, we need to remember this destructive nature of bootstrap.
+# One must always run Install Nightscout phase 1 after running bootstrap.
 
 sudo apt-get update
 sudo apt-get install dialog
