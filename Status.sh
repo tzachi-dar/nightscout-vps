@@ -139,7 +139,7 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.02.15\n\
+Nightscout on Google Cloud: 2023.02.19\n\
 $Missing $Phase1 \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
