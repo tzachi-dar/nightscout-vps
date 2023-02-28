@@ -28,6 +28,7 @@ then
   then
     if [ ! "$(tar -tf $File 'database.gz')" = "database.gz" ] || [ ! "$(tar -tf $File 'nsconfig')" = "nsconfig" ]
     then
+      clear
       dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\nThe backup file may be corrupt.  Please report." 10 50
       goback=1 # Don't execute the rest of the loop
     fi
@@ -75,6 +76,7 @@ esac
       then
         mongorestore --gzip --archive=database.gz
         fail=$?
+        clear
         if [ $fail = 1 ]
         then
           dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\nThe database import failed.  Please report." 8 50
@@ -107,6 +109,7 @@ if [ $goback -eq 0 ]
 then
   if [ "$(file -b "$File" | awk '{print $1}')" = "gzip" ] # If the backup file is a gzip file, we will know that it is an old backup only containing the database.
   then
+    clear
     dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
 The backup only contains a database.  Press enter to import it." 9 50
     key=$?
