@@ -212,5 +212,5 @@ cat > /tmp/FreeDNS_Failed << EOF
 Internal error.  Must run FreeDNS again.
 EOF
 
-dialog --colors --msgbox "     \Zr Developed by the xDrip team \Zn\n\nInternal error.  Press enter to exit.  Then, run FreeDNS Setup again" 9 50
+dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\nInternal error.  Press enter to exit.  Then, run \"Install Nightscout phase 2\" again." 8 50
  

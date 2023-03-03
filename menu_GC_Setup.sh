@@ -8,12 +8,12 @@ clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
         \Zr Developed by the xDrip team \Zn\n\n
 Use the arrow keys to move the cursor.\n\
-Press Enter to execute the highlighted option.\n" 16 50 6\
+Press Enter to execute the highlighted option.\n" 17 50 7\
  "1" "Install Nightscout phase 1 - 15 minutes"\
  "2" "Install Nightscout phase 2 - 5 minutes"\
- "3" "FreeDNS Setup"\
- "4" "Update platform"\
- "5" "Bootstrap"\
+ "3" "Update platform"\
+ "4" "Bootstrap the stable release"\
+ "5" "Bootstrap the dev. release (advanced)"\
  "6" "Return"\
  3>&1 1>&2 2>&3)
 
@@ -28,11 +28,6 @@ sudo /xDrip/scripts/NS_Install2.sh
 ;;
 
 3)
-clear
-sudo /xDrip/scripts/ConfigureFreedns.sh
-;;
-
-4)
 cd /srv
 cd "$(< repo)"  # Go to the local database
 sudo git reset --hard  # delete any local edits.
@@ -47,11 +42,16 @@ dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
 Close this terminal to complete updates." 7 50
 ;;
 
-5)
+4)
 curl https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-1/bootstrap.sh | bash
+;;
+
+5)
+curl https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-dev/bootstrap.sh | bash
 ;;
 
 6)
 ;;
 
 esac
+ 

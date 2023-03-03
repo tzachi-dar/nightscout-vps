@@ -15,7 +15,7 @@ grep 'us-central1' /tmp/Zone > /tmp/us-central1
 grep 'us-east1' /tmp/Zone > /tmp/us-east1
 if [ ! -s /tmp/us-west1 ] && [ ! -s /tmp/us-central1 ] && [ ! -s /tmp/us-east1 ] 
 then
-Zone="\Zb\Z1"$ZoneRaw"\Zn"
+Zone="\Zb\Z1"$ZoneRaw"\Zn" # Set color to red if the zone is not one of the three free ones.
 fi
 
 # Ram size - This is used to determine if the machine type is micro or not
@@ -24,14 +24,14 @@ unit="M"
 Ramsize="$Ram"$unit
 if [ $Ram -gt 1000 ]
 then
-Ramsize="\Zb\Z1 $Ram$unit \Zn"
+Ramsize="\Zb\Z1 $Ram$unit \Zn" # Set color to red if Ram size is greater than 1G
 fi
 
 # Disk type
-disk="\Z1\ZbBalanced\Zn"
+disk="\Z1\ZbBalanced\Zn" # Set the color to red.
 if [ $(cat /sys/block/sda/queue/rotational) -eq 1 ]
 then 
-disk="Standard"
+disk="Standard" # Clear the color if the disk type is standard.
 fi
 
 #Disk size
@@ -39,7 +39,7 @@ disksz="$(df -h | sed -n 2p | awk '{print $2}')"
 DiskUsedPercent="$(df -h | sed -n 2p | awk '{print $5}')"
 if [ ! "$disksz" = "29G" ]
 then
-disksz="\Zb\Z1$(df -h | sed -n 2p | awk '{print $2}')\Zn"
+disksz="\Zb\Z1$(df -h | sed -n 2p | awk '{print $2}')\Zn" # Set color to red if disk size is not 29G.
 fi
 
 #Swap file
@@ -61,7 +61,7 @@ grep 'timed out' /tmp/https > /tmp/https2
 http="Open"
 if [ -s /tmp/http2 ] || [ -s /tmp/https2 ]
 then
-http="\Zb\Z1Closed\Zn"
+http="\Zb\Z1Closed\Zn" # Set color to red if the Firewall is not set.
 fi
 
 mongo="$(mongod --version | sed -n 1p)"
@@ -70,19 +70,19 @@ ns="$(ps -ef | grep SCREEN | grep root | fold --width=40 | sed -n 1p)"
 uname="$(< /srv/username)"
 if [ ! "$(< /srv/username)" = "jamorham" ]
 then
-uname="\Zb\Z1$(< /srv/username)\Zn"
+uname="\Zb\Z1$(< /srv/username)\Zn" # Set the color to red if the user name is not jamorham.
 fi
 
 repo="$(< /srv/repo)"
 if [ ! "$(< /srv/repo)" = "nightscout-vps" ]
 then
-repo="\Zb\Z1$(< /srv/repo)\Zn"
+repo="\Zb\Z1$(< /srv/repo)\Zn" # Set the color to red if the repository name is not nightscout-vps.
 fi
 
 branch="$(< /srv/brnch)"
-if [ ! "$(< /srv/brnch)" = "vps-1" ]
+if [ ! "$(< /srv/brnch)" = "vps-1" ] && [ ! "$(< /srv/brnch)" = "vps-dev" ]
 then
-branch="\Zb\Z1$(< /srv/brnch)\Zn"
+branch="\Zb\Z1$(< /srv/brnch)\Zn" # Set the color to red if the branch name is not either vps-1 or vps-dev.
 fi
 
 HOSTNAME=""
@@ -116,8 +116,17 @@ fi
 Missing=""
 if [ "$(which qrencode)" = "" ]
 then
-  Missing="\Zb\Z1Missing packages\Zn"
+  Missing="\Zb\Z1Missing packages  \Zn"
 fi
+
+# Verify that Installation phase 1 has been executed after bootstrap
+Phase1=""
+cd /srv
+cd "$(< repo)"
+if [ ! -s ./node_modules ]
+then
+  Phase1="\Zb\Z1Missing node_modules\Zn"
+fi  
 
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
@@ -130,8 +139,8 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.01.22\n\
-$Missing \n\n\
+Nightscout on Google Cloud: 2023.02.19\n\
+$Missing $Phase1 \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
 Mongo: $mongo \n\
