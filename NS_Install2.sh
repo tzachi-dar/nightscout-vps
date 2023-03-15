@@ -151,7 +151,7 @@ screen -dmS nightscout sudo -u nobody bash /etc/nightscout-start.sh
 service nginx start
 EOF
 
- chmod a+x /etc/rc.local
+chmod a+x /etc/rc.local
 
 cat > /etc/systemd/system/rc-local.service << "EOF"
 [Unit]
