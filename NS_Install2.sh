@@ -100,8 +100,8 @@ clear
 exec 3>&1
 Value=$(dialog --colors --ok-label "Submit" --form "       \Zr Developed by the xDrip team \Zn\n\n\n\
 Your current API_SECRET is $cs\n\n\
-You can press escape to maintain the existing one.  Or, enter a new one with at least 12 characters excluding the following.\n\n\
-$ \" \\\n " 19 50 0 "API_SECRET:" 1 1 "$secr" 1 14 25 0 2>&1 1>&3)
+You can press escape to keep it unchanged.  Or, enter a new one with at least 12 characters excluding the following.\n\n\
+$  \"  '  \\ \n " 19 50 0 "API_SECRET:" 1 1 "$secr" 1 14 25 0 2>&1 1>&3)
 response=$?
 if [ $response = 255 ] || [ $response = 1 ] # cancled or escaped
 then
@@ -122,12 +122,12 @@ clear
 
 if [ $go_back -lt 1 ]
 then
-  if [[ $ns == *[\$]* ]] || [[ $ns == *[\"]* ]] || [[ $ns == *[\\]* ]] # Reject if submission contains unacceptable characters.
+  if [[ $ns == *[\$]* ]] || [[ $ns == *[\"]* ]] || [[ $ns == *[\']* ]] || [[ $ns == *[\\]* ]] # Reject if submission contains unacceptable characters.
   then
     go_back=1
     clear
     dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
-API_SECRET should not include $, \" or \\.  Please try again."  8 50
+API_SECRET should not include $, \\, ' or \".  Please try again."  8 50
   else
     got_it=1
   fi
@@ -151,7 +151,7 @@ screen -dmS nightscout sudo -u nobody bash /etc/nightscout-start.sh
 service nginx start
 EOF
 
-chmod a+x /etc/rc.local
+ chmod a+x /etc/rc.local
 
 cat > /etc/systemd/system/rc-local.service << "EOF"
 [Unit]
