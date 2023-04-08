@@ -113,8 +113,9 @@ cert="Valid"
 fi
 
 # Verify that the latest added package has been installed
+# The utility must be the last added utility to the update_packages.sh file.
 Missing=""
-if [ "$(which qrencode)" = "" ]
+if [ "$(which file)" = "" ]
 then
   Missing="\Zb\Z1Missing packages  \Zn"
 fi
@@ -139,7 +140,7 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.02.19\n\
+Nightscout on Google Cloud: 2023.03.19\n\
 $Missing $Phase1 \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
