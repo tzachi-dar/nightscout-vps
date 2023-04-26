@@ -129,9 +129,9 @@ then
   Phase1="\Zb\Z1Missing node_modules\Zn"
 fi  
 
-# Verify that Nightscout will start after a reboot even if FreeDNS is down.
+# Verify that exit 0 is in rc.local so that Nightscout can start after a reboot even if FreeDNS is down.
 rclocal_1="\Zb\Z1Startup dependence on FreeDNS\Zn"
-grep '$DIRECTURL &' /etc/rc.local > /tmp/rclocal_1
+grep 'exit 0' /etc/rc.local > /tmp/rclocal_1
 if [ -s /tmp/rclocal_1 ]
 then
   rclocal_1=""
@@ -148,7 +148,7 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.04.24\n\
+Nightscout on Google Cloud: 2023.04.26\n\
 $Missing $Phase1 $rclocal_1 \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
