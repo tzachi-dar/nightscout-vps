@@ -47,7 +47,7 @@ swap="$(free -h | sed -n 3p | awk '{print $2}')"
 
 #Ubuntu version
 ubuntu="$(lsb_release -a | sed -n 2p | awk '{print $3, $4}')"
-if [ ! "$ubuntu" = "20.04.5 LTS" ]
+if [ ! "$ubuntu" = "20.04.5 LTS" || ! "$ubuntu" = "20.04.6 LTS" ]
 then
 ubuntu="\Zb\Z1$(lsb_release -a | sed -n 2p | awk '{print $3, $4}')\Zn"
 fi
