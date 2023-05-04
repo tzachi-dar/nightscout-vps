@@ -4,9 +4,12 @@ echo
 echo "Install packages only if they are not installed already. - Navid200"
 echo
 
-# Let's install the missing needed packages.
+# Reduce the number of snapshots kept from the default 3 to 2 to reduce disk space usage.
+sudo snap set system refresh.retain=2
 
+# Let's upgrade packages if available and install the missing needed packages.
 sudo apt-get update
+sudo apt-get -y upgrade
 
 # vis
 whichpack=$(which vis)
