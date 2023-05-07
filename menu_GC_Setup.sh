@@ -34,7 +34,6 @@ sudo git reset --hard  # delete any local edits.
 sudo git pull  # Update database from remote.
 sudo chmod 755 update_scripts.sh
 sudo cp -f update_scripts.sh /xDrip/scripts/. # Update the "update scripts" script. 
-sudo cp -f update_packages.sh /xDrip/scripts/. # Update the "update_packages" script.
 clear
 sudo /xDrip/scripts/update_scripts.sh
 sudo /xDrip/scripts/update_packages.sh
