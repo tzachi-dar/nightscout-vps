@@ -9,7 +9,13 @@ sudo snap set system refresh.retain=2
 
 # Let's upgrade packages if available and install the missing needed packages.
 sudo apt-get update
-sudo apt-get -y upgrade
+
+#Ubuntu version
+ubuntu="$(lsb_release -a | sed -n 2p | awk '{print $3, $4}')"
+if [ "$ubuntu" = "20.04.5 LTS" ] # Only upgrade if we have tested the next release
+then
+  sudo apt-get -y upgrade
+fi
 
 # vis
 whichpack=$(which vis)
