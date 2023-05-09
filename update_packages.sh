@@ -11,7 +11,7 @@ sudo snap set system refresh.retain=2
 sudo apt-get update
 
 #Ubuntu upgrade available
-NextUbuntu="apt-get -s upgrade | grep 'Inst base' | awk '{print $4}' | sed 's/(//'"
+NextUbuntu="$(apt-get -s upgrade | grep 'Inst base' | awk '{print $4}' | sed 's/(//')"
 if [ "$NextUbuntu" = "11ubuntu5.7" ] # Only upgrade if we have tested the next release
 then
   sudo apt-get -y upgrade
