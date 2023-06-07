@@ -33,7 +33,7 @@ cd "$(< repo)"  # Go to the local database
 sudo git reset --hard  # delete any local edits.
 sudo git pull  # Update database from remote.
 sudo chmod 755 update_scripts.sh
-sudo cp -f update_scripts.sh /xDrip/scripts/.
+sudo cp -f update_scripts.sh /xDrip/scripts/. # Update the "update scripts" script. 
 clear
 sudo /xDrip/scripts/update_scripts.sh
 sudo /xDrip/scripts/update_packages.sh

@@ -47,7 +47,7 @@ swap="$(free -h | sed -n 3p | awk '{print $2}')"
 
 #Ubuntu version
 ubuntu="$(lsb_release -a | sed -n 2p | awk '{print $3, $4}')"
-if [ ! "$ubuntu" = "20.04.5 LTS" ]
+if [ ! "$ubuntu" = "20.04.5 LTS" && ! "$ubuntu" = "20.04.6 LTS" ]
 then
 ubuntu="\Zb\Z1$(lsb_release -a | sed -n 2p | awk '{print $3, $4}')\Zn"
 fi
@@ -129,6 +129,14 @@ then
   Phase1="\Zb\Z1Missing node_modules\Zn"
 fi  
 
+# Verify that exit 0 is in rc.local so that Nightscout can start after a reboot even if FreeDNS is down.
+rclocal_1="\Zb\Z1Startup dependence on FreeDNS\Zn"
+grep 'exit 0' /etc/rc.local > /tmp/rclocal_1
+if [ -s /tmp/rclocal_1 ]
+then
+  rclocal_1=""
+fi
+
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
         \Zr Developed by the xDrip team \Zn\n\n\
@@ -140,8 +148,8 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.03.19\n\
-$Missing $Phase1 \n\n\
+Nightscout on Google Cloud: 2023.05.09\n\
+$Missing $Phase1 $rclocal_1 \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
 Mongo: $mongo \n\

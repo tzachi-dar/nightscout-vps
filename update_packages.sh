@@ -4,9 +4,18 @@ echo
 echo "Install packages only if they are not installed already. - Navid200"
 echo
 
-# Let's install the missing needed packages.
+# Reduce the number of snapshots kept from the default 3 to 2 to reduce disk space usage.
+sudo snap set system refresh.retain=2
 
+# Let's upgrade packages if available and install the missing needed packages.
 sudo apt-get update
+
+#Ubuntu upgrade available
+NextUbuntu="$(apt-get -s upgrade | grep 'Inst base' | awk '{print $4}' | sed 's/(//')"
+if [ "$NextUbuntu" = "11ubuntu5.7" ] # Only upgrade if we have tested the next release
+then
+  sudo apt-get -y upgrade
+fi
 
 # vis
 whichpack=$(which vis)
