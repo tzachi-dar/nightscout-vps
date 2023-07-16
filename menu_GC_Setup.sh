@@ -14,7 +14,8 @@ Press Enter to execute the highlighted option.\n" 17 50 7\
  "3" "Update platform"\
  "4" "Bootstrap the stable release"\
  "5" "Bootstrap the dev. release (advanced)"\
- "6" "Return"\
+ "6" "Enter FreeDNS ID and password"\
+ "7" "Return"\
  3>&1 1>&2 2>&3)
 
 case $Choice in
@@ -37,6 +38,7 @@ sudo cp -f update_scripts.sh /xDrip/scripts/. # Update the "update scripts" scri
 clear
 sudo /xDrip/scripts/update_scripts.sh
 sudo /xDrip/scripts/update_packages.sh
+sudo /xDrip/scripts/StartUpSetup.sh
 clear
 dialog --colors --msgbox "        \Zr Developed by the xDrip team \Zn\n\n\
 Close this terminal to complete updates." 7 50
@@ -51,6 +53,10 @@ curl https://raw.githubusercontent.com/jamorham/nightscout-vps/vps-dev/bootstrap
 ;;
 
 6)
+sudo /xDrip/scripts/update_FreeDNSCredentials.sh
+;;
+
+7)
 ;;
 
 esac
