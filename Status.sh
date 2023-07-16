@@ -47,7 +47,7 @@ swap="$(free -h | sed -n 3p | awk '{print $2}')"
 
 #Ubuntu version
 ubuntu="$(lsb_release -a | sed -n 2p | awk '{print $3, $4}')"
-if [ ! "$ubuntu" = "20.04.5 LTS" && ! "$ubuntu" = "20.04.6 LTS" ]
+if [ ! "$ubuntu" = "20.04.6 LTS" ]
 then
 ubuntu="\Zb\Z1$(lsb_release -a | sed -n 2p | awk '{print $3, $4}')\Zn"
 fi
@@ -137,6 +137,21 @@ then
   rclocal_1=""
 fi
 
+# Mark FreeDNS login issues.
+freedns_id=""
+freedns_pass=""
+if [ -s /xDrip/FreeDNS_ID_Pass ]
+then
+  . /xDrip/FreeDNS_ID_Pass
+  freedns_id=$User_ID
+  freedns_pass=$Password
+fi
+freedns_id_pass=""
+if [ -s /xDrip/FreeDNS_Fail ]
+then
+  freedns_id_pass="\Zb\Z5FreeDNS ID and pass\Zn"
+fi
+
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
         \Zr Developed by the xDrip team \Zn\n\n\
@@ -148,31 +163,32 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Nightscout on Google Cloud: 2023.05.09\n\
-$Missing $Phase1 $rclocal_1 \n\n\
+Google Cloud Nightscout  2023.07.17\n\
+$Missing $Phase1 $rclocal_1 $freedns_id_pass \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
 Mongo: $mongo \n\
 NS proc: $ns \n\
 FreeDNS name and IP: $FD \n\
 Certificate: $cert \
- " 29 50 2\
+ " 30 50 3\
  "1" "Return"\
- "2" "Hostname and password"\
+ "2" "Login credentials"\
  3>&1 1>&2 2>&3)
  
- case $Choice in
+case $Choice in
  
- 1)
+1)
 exit
 ;;
 
 2)
 dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
-               \Zb\Z1Keep private.\Zn\n\
-FreeDNS hostname:  $HOSTNAME\n\
-API_SECRET: $apisec" 9 50
+              \Zb\Z1Keep private!\Zn\n\n\
+Hostname:  $HOSTNAME\n\
+API_SECRET: $apisec\n\n\
+FreeDNS User ID: $freedns_id\n\
+FreeDNS password: $freedns_pass" 13 50
 ;;
-
 esac
  
