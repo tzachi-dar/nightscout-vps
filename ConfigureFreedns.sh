@@ -15,7 +15,7 @@ fi
 sudo apt-get install bind9-dnsutils -y
 
 echo
-echo "Move to use free dns instead of noip.com" - tzachi-dar
+echo "Move to use free dns instead of noip.com - tzachi-dar"
 echo
 
 got_them=0
@@ -118,6 +118,15 @@ then
         else
           FLine=$(</tmp/FullLine)
           got_them=1 # We have the hostname and direct URL
+          rm -rf /xDrip/FreeDNS_ID_Pass
+cat > /xDrip/FreeDNS_ID_Pass << EOF
+#!/bin/sh
+# This file is generated automatically.  It will be deleted and recreated.
+# Please do not add anything to this file.
+export User_ID=$user
+export Password=$pass
+EOF
+          
         fi # fi 1
 
       fi # fi 2
@@ -152,13 +161,6 @@ EOF
 # Start the first update immediately
 wget -O - --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 $directurl
 
-#Add the command to renew the script to the startup url
-if ! grep -q "DIRECTURL" /etc/rc.local; then
-    echo . /etc/free-dns.sh >>  /etc/rc.local
-    echo wget -O /tmp/freedns.txt --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 \$DIRECTURL >>  /etc/rc.local
-    echo exit 0 \# This should be the last line to ensure the startup will complete. >> /etc/rc.local
-fi
-
 dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\n\
 Press enter to proceed.  Please be patient as it may take up to 10 minutes to complete." 8 50
 clear
@@ -189,7 +191,6 @@ Please close this window.  Open a new SSH terminal.  Run FreeDNS Setup again to 
 done
 
 #Fix the certificate using the new host name.
-
 
 for i in {1..4}
 do
