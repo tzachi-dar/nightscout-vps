@@ -118,14 +118,6 @@ then
         else
           FLine=$(</tmp/FullLine)
           got_them=1 # We have the hostname and direct URL
-          rm -rf /xDrip/FreeDNS_ID_Pass
-cat > /xDrip/FreeDNS_ID_Pass << EOF
-#!/bin/sh
-# This file is generated automatically.  It will be deleted and recreated.
-# Please do not add anything to this file.
-export User_ID=$user
-export Password=$pass
-EOF
           
         fi # fi 1
 
@@ -156,6 +148,16 @@ cat> /etc/free-dns.sh<<EOF
 #!/bin/sh
 export HOSTNAME=$hostname
 export DIRECTURL=$directurl
+EOF
+
+# Create a file to store the FreeDNS user ID and password.
+rm -rf /xDrip/FreeDNS_ID_Pass
+cat > /xDrip/FreeDNS_ID_Pass << EOF
+#!/bin/sh
+# This file is generated automatically.  It will be deleted and recreated.
+# Please do not add anything to this file.
+export User_ID=$user
+export Password=$pass
 EOF
 
 # Start the first update immediately
