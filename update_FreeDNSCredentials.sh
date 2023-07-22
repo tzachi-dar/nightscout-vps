@@ -14,7 +14,6 @@ then
   got_them=0
   while [ $got_them -lt 1 ]
   do
-  go_back=0
   exec 3>&1
   Values=$(dialog --colors --ok-label "Submit" --form "       \Zr Developed by the xDrip team \Zn\n\n\n\
 This utility lets you update your FreeDNS user ID and password in Google Cloud Nightscout.\n\
@@ -36,10 +35,7 @@ Enter your ID and password to proceed.  Or press escape to cancel." 22 50 0 "Use
   if [ ! "`grep 'Could not authenticate' /tmp/hosts`" = "" ] # Failed to log in
   then
     dialog --colors --msgbox "       \Zr Developed by the xDrip team \Zn\n\nFailed to authenticate.  Please try again."  7 50
-    go_back=1
-  fi
-  if [ $go_back -lt 1 ] # Got them
-  then
+  else
     got_them=1
     cat > /xDrip/FreeDNS_ID_Pass << EOF
 #!/bin/sh
@@ -49,6 +45,7 @@ export User_ID=$user
 export Password=$pass
 EOF
 
+  rm -rf /xDrip/FreeDNS_Fail # Clear the status page key
   fi
   done
 else # If FreeDNS is down
