@@ -147,7 +147,7 @@ then
   freedns_pass=$Password
 fi
 freedns_id_pass=""
-if [ -s /xDrip/FreeDNS_Fail ] || [ ! -s /xDrip/FreeDNS_IDPass ]
+if [ -s /xDrip/FreeDNS_Fail ] || [ ! -s /xDrip/FreeDNS_ID_Pass ]
 then
   freedns_id_pass="\Zb\Z5FreeDNS ID and pass\Zn"
 fi
