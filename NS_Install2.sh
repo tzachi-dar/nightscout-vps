@@ -140,16 +140,7 @@ then
   sed -i -e "s/API_SECRET=.*/API_SECRET=\'${ns}\'/g" /etc/nsconfig # Replace API_SECRET in nsconfig with the new one using single quotes.
 fi
 
-cat > /etc/rc.local << "EOF"
-#!/bin/bash
-PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-cd /tmp
-swapon /var/SWAP
-service snapd stop
-service mongodb start
-screen -dmS nightscout sudo -u nobody bash /etc/nightscout-start.sh
-service nginx start
-EOF
+/xDrip/scripts/StartUpSetup.sh
 
  chmod a+x /etc/rc.local
 
