@@ -102,7 +102,7 @@ fi
 fi
 
 . /etc/nsconfig
-apisec=$API_SECRET
+apisec=$API_SECRET # What Nightscout sees as API_SECRET
 
 curl https://$HOSTNAME > /tmp/$HOSTNAME.txt
 curl_ret=$?
@@ -152,6 +152,38 @@ then
   freedns_id_pass="\Zb\Z5FreeDNS ID and pass\Zn"
 fi
 
+# Verify API_SECRET since it can be edited after installation
+apisec_problem="" # No flag
+apisec_literal=$(grep 'API_SECRET=' /etc/nsconfig) # Extract the line containing API_SECRET= from the nsconfig file (including the quotation marks).
+apisec_literal=$(echo "$apisec_literal" | sed 's/^.*=//') # Drop everything up to and including the equal sign.
+if [[ "$apisec_literal" == *" #"* ]] # Is there a comment?
+then
+  apisec_literal=${apisec_literal%%#*} # Remove the comment and everything after.
+fi
+apisec_literal=$(echo "$apisec_literal" | awk '{$1=$1};1') # Remove trailing spaces
+apisec_literal="$apisec_literal"
+first="${apisec_literal:0:1}" # The first character, which should be either ' or "
+last="${apisec_literal: -1}" # The last character, which should be either ' or "
+if [[ "$first" == "$last" ]] # Are the first and last characters identical?
+then
+  if [[ "$first" == "'" ]] || [[ "$first" == "\"" ]] # Is the first character either ' or "
+  then
+    apisec_literal="${apisec_literal:1: -1}" # Remove the first and last characters (quotation mark pair)
+    if [[ "$apisec_literal" == *"@"* ]] || [[ "$apisec_literal" == *" "* ]] || [[ "$apisec_literal" == *"/"* ]] || [[ "$apisec_literal" == *"\\"* ]] || [[ "$apisec_literal" == *"'"* ]] || [[ "$apisec_literal" == *"\""* ]] || [[ "$apisec_literal" == *"$"* ]] || [[ ${#apisec_literal} -lt 12 ]] # Is an illegal character present?
+    then
+      apisec_problem="*" # Mark the presence of one of the seven illegal characters.  
+      if [[ "$apisec" != "$apisec_literal"  ]] # Is what Nightscout sees different than what we have extracted?
+      then
+        apisec_problem="*" # Mark an unacceptable combination.
+      fi
+    fi
+  else
+    apisec_problem="*" # Mark that the first character is neither ' nor "
+  fi
+else
+  apisec_problem="*" # Mark that the first and last characters (should be a pair of quoation marks) are not identical.
+fi
+
 clear
 Choice=$(dialog --colors --nocancel --nook --menu "\
         \Zr Developed by the xDrip team \Zn\n\n\
@@ -163,8 +195,8 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Google Cloud Nightscout  2023.07.22\n\
-$Missing $Phase1 $rclocal_1 $freedns_id_pass \n\n\
+Google Cloud Nightscout  2023.09.08\n\
+$apisec_problem $Missing $Phase1 $rclocal_1 $freedns_id_pass \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
 Mongo: $mongo \n\
