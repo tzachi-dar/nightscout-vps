@@ -2,7 +2,7 @@
 
 # Show a summary of parameters.  -  Navid200
 clear
-echo "Please be patient (30 seconds)"
+echo "Please be patient.  It may take up to 2 minutes."
 echo "  "
 echo "  "
 
@@ -92,7 +92,6 @@ then
 FD="No hostname"
 else
 registered=$(nslookup $HOSTNAME|tail -n2|grep A|sed s/[^0-9.]//g)
-current=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
 if [ ! "$registered" = "$current" ]
 then
 FD="\Zb\Z1Mismatch\Zn"
@@ -195,7 +194,7 @@ Disk size: $disksz        $DiskUsedPercent used \n\
 Ubuntu: $ubuntu \n\
 HTTP & HTTPS:  $http \n\
 ------------------------------------------ \n\
-Google Cloud Nightscout  2023.09.08\n\
+Google Cloud Nightscout  2023.09.21\n\
 $apisec_problem $Missing $Phase1 $rclocal_1 $freedns_id_pass \n\n\
 /$uname/$repo/$branch\n\
 Swap: $swap \n\
